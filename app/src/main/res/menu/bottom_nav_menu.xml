@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_timer"
+        android:icon="@drawable/baseline_timer_24"
+        android:title="Timer" />
+
+    <item
+        android:id="@+id/nav_toDo"
+        android:icon="@drawable/baseline_checklist_24"
+        android:title="To-do" />
+
+    <item
+        android:id="@+id/nav_social"
+        android:icon="@drawable/baseline_social_distance_24"
+        android:title="Social"
+        />
+</menu>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ProductivityApp</string>
+    <string name="iniciarTextoBoton">Iniciar</string>
+    <string name="detenerTextoBoton">Detener</string>
+    <string name="modo_estudio">Modo estudio</string>
+    <string name="modo_descanso">Modo descanso</string>
+    <string name="estudio">Estudio</string>
+    <string name="descanso">Descanso</string>
+</resources>
