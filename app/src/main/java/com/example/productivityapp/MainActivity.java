@@ -6,12 +6,14 @@ import androidx.appcompat.widget.SwitchCompat;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,11 +36,22 @@ public class MainActivity extends AppCompatActivity {
     private TextView modoText;
     private BottomNavigationView navView;
     private boolean isTimerRunning = false;
+    private ProgressBar circularProgressBar;
+    private int totalTimeInSeconds;
+    private int currentTimeInSeconds;
+    int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        circularProgressBar = findViewById(R.id.circularProgressBar);
+        totalTimeInSeconds = STUDY_TIME * 60;
+        circularProgressBar.setMax(totalTimeInSeconds);
+        circularProgressBar.setProgress(totalTimeInSeconds);
+        circularProgressBar.setRotation(0);
+
 
         cargarDatosSP();
 
@@ -91,11 +104,13 @@ public class MainActivity extends AppCompatActivity {
     private void switchBreakMode() {
         timerText.setText(formatTime(MainActivity.BREAK_TIME, 0));
         modoText.setText(R.string.modo_descanso);
+        circularProgressBar.setMax(BREAK_TIME * 60);
     }
 
     private void switchStudyMode() {
         timerText.setText(formatTime(MainActivity.STUDY_TIME, 0));
         modoText.setText(R.string.modo_estudio);
+        circularProgressBar.setMax(STUDY_TIME * 60);
     }
 
     private void cargarDatosSP(){
@@ -142,12 +157,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void startTimer(int minutes) {
         Log.i("INFO", String.format("Minutes: %d", minutes));
+        totalTimeInSeconds = minutes * 60;
+        currentTimeInSeconds = totalTimeInSeconds;
         timer = new CountDownTimer(minutes * 60 * 1000 + 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 long minutes = millisUntilFinished / 60000;
                 long seconds = (millisUntilFinished % 60000) / 1000;
                 timerText.setText(formatTime(minutes, seconds));
+                currentTimeInSeconds = (int) millisUntilFinished / 1000;
+                circularProgressBar.setProgress(currentTimeInSeconds);
+                Log.i("progress: ",Integer.toString(circularProgressBar.getProgress()));
             }
 
             @Override
