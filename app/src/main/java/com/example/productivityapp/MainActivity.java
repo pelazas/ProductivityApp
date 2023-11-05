@@ -6,7 +6,6 @@ import androidx.appcompat.widget.SwitchCompat;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +16,12 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.productivityapp.utils.Formatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.w3c.dom.Text;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 
-//HACE LA FUNCIÓN DE ACTIVITY DE TIMER
 public class MainActivity extends AppCompatActivity {
 
     private static int STUDY_TIME = 25;
@@ -35,23 +33,18 @@ public class MainActivity extends AppCompatActivity {
     private SwitchCompat modoSwitch;
     private TextView modoText;
     private BottomNavigationView navView;
-    private boolean isTimerRunning = false;
     private ProgressBar circularProgressBar;
-    private int totalTimeInSeconds;
-    private int currentTimeInSeconds;
-    int i = 0;
+
+    private boolean isTimerRunning = false;
+    private int timerDuration;
+    private int timeElapsed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        circularProgressBar = findViewById(R.id.circularProgressBar);
-        totalTimeInSeconds = STUDY_TIME * 60;
-        circularProgressBar.setMax(totalTimeInSeconds);
-        circularProgressBar.setProgress(totalTimeInSeconds);
-        circularProgressBar.setRotation(0);
-
+        circularProgressBar = initializeProgressBar();
 
         cargarDatosSP();
 
@@ -61,113 +54,116 @@ public class MainActivity extends AppCompatActivity {
         modoSwitch = findViewById(R.id.modo_switch);
         modoText = findViewById(R.id.modo_text);
 
-        if (modoSwitch.isChecked()) {
+        if (modoSwitch.isActivated()) {
             switchBreakMode();
         } else {
             switchStudyMode();
         }
 
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        timerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isTimerRunning) {
-                    timer.cancel();
-                    isTimerRunning = false;
-                    timerButton.setText(R.string.iniciarTextoBoton);
-                } else {
-                    startTimer(modoSwitch.isChecked() ? MainActivity.BREAK_TIME : MainActivity.STUDY_TIME);
-                    isTimerRunning = true;
-                    timerButton.setText(R.string.detenerTextoBoton);
-                }
+        navView.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        timerButton.setOnClickListener(view -> {
+            if (isTimerRunning) {
+                timer.cancel();
+                isTimerRunning = false;
+                timerButton.setText(R.string.iniciarTextoBoton);
+            } else {
+                startTimer(modoSwitch.isActivated() ? MainActivity.BREAK_TIME : MainActivity.STUDY_TIME);
+                isTimerRunning = true;
+                timerButton.setText(R.string.detenerTextoBoton);
             }
         });
 
-        modoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (timer != null) {
-                    timer.cancel();
-                    isTimerRunning = false;
-                    timerButton.setText(R.string.iniciarTextoBoton);
-                }
+        modoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (timer != null) {
+                timer.cancel();
+                isTimerRunning = false;
+                timerButton.setText(R.string.iniciarTextoBoton);
+            }
 
-                if (isChecked) {
-                    switchBreakMode();
-                } else {
-                    switchStudyMode();
-                }
+            if (isChecked) {
+                switchBreakMode();
+            } else {
+                switchStudyMode();
             }
         });
+    }
+
+    private ProgressBar initializeProgressBar() {
+        ProgressBar pb = findViewById(R.id.circularProgressBar);
+        timerDuration = STUDY_TIME * 60;
+
+        pb.setMax(timerDuration);
+        pb.setProgress(timerDuration);
+        pb.setRotation(0);
+
+        return pb;
     }
 
     private void switchBreakMode() {
-        timerText.setText(formatTime(MainActivity.BREAK_TIME, 0));
+        timerText.setText(Formatter.formatTime(MainActivity.BREAK_TIME, 0));
         modoText.setText(R.string.modo_descanso);
-        circularProgressBar.setMax(BREAK_TIME * 60);
+        timerDuration = BREAK_TIME * 60;
+
+        circularProgressBar.setMax(timerDuration);
+        circularProgressBar.setProgress(timerDuration);
     }
 
     private void switchStudyMode() {
-        timerText.setText(formatTime(MainActivity.STUDY_TIME, 0));
+        timerText.setText(Formatter.formatTime(MainActivity.STUDY_TIME, 0));
         modoText.setText(R.string.modo_estudio);
-        circularProgressBar.setMax(STUDY_TIME * 60);
+        timerDuration = STUDY_TIME * 60;
+
+        circularProgressBar.setMax(timerDuration);
+        circularProgressBar.setProgress(timerDuration);
     }
 
     private void cargarDatosSP(){
         Spinner sp = findViewById(R.id.spAsignaturas);
+
         ArrayList<String> asignaturas = new ArrayList<>();
-        asignaturas.add("Matematicas");
+        asignaturas.add("Matemáticas");
         asignaturas.add("Lengua");
         asignaturas.add("Física");
         asignaturas.add("Historia");
-        // Se crea el adaptador de arrays
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, asignaturas);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Aplicar el adapter al spinner
+
         sp.setAdapter(adapter);
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    /* Cuando se selecciona uno de los botones / ítems*/
+    private NavigationBarView.OnItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+                int itemId = item.getItemId();
 
-        /* Cuando se selecciona uno de los botones / ítems*/
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_timer){
-                /*TimerFragment timer = TimerFragment.newInstance(null);
-                getSupportFragmentManager().beginTransaction().replace(
-                        R.id.timerFragment, timer).commit();*/
-                return true;
-            }else if (itemId == R.id.nav_toDo){
-                /*ToDoFragment toDo = ToDoFragment.newInstance(null);
-                getSupportFragmentManager().beginTransaction().replace(
-                        R.id.toDoFragment, toDo).commit()*/
-                return true;
-            }else if (itemId == R.id.nav_social){
-                /*SocialFragment social = SocialFragment.newInstance(null);
-                getSupportFragmentManager().beginTransaction().replace(
-                        R.id.socialFragment, social).commit();*/
-                return true;
-            }
-            throw new IllegalStateException("Unexpected value: " + item.getItemId());
-        };
-    };
+                if (itemId == R.id.nav_timer){
+                    return true;
+                } else if (itemId == R.id.nav_toDo){
+                    return true;
+                } else if (itemId == R.id.nav_social){
+                    return true;
+                } else {
+                    throw new IllegalStateException("Unexpected value: " + item.getItemId());
+                }
+            };
 
     private void startTimer(int minutes) {
-        Log.i("INFO", String.format("Minutes: %d", minutes));
-        totalTimeInSeconds = minutes * 60;
-        currentTimeInSeconds = totalTimeInSeconds;
+        timerDuration = minutes * 60;
+        timeElapsed = timerDuration;
+
         timer = new CountDownTimer(minutes * 60 * 1000 + 1000, 1000) {
+
             @Override
             public void onTick(long millisUntilFinished) {
                 long minutes = millisUntilFinished / 60000;
                 long seconds = (millisUntilFinished % 60000) / 1000;
-                timerText.setText(formatTime(minutes, seconds));
-                currentTimeInSeconds = (int) millisUntilFinished / 1000;
-                circularProgressBar.setProgress(currentTimeInSeconds);
-                Log.i("progress: ",Integer.toString(circularProgressBar.getProgress()));
+
+                timerText.setText(Formatter.formatTime(minutes, seconds));
+                timeElapsed = (int) millisUntilFinished / 1000;
+                circularProgressBar.setProgress(timeElapsed);
             }
 
             @Override
@@ -177,9 +173,5 @@ public class MainActivity extends AppCompatActivity {
                 timerButton.setText(R.string.iniciarTextoBoton);
             }
         }.start();
-    }
-
-    private String formatTime(long minutes, long seconds) {
-        return String.format("%02d:%02d", minutes, seconds);
     }
 }
