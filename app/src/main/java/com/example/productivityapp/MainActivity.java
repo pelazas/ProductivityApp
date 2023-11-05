@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_timer){
                     return true;
                 } else if (itemId == R.id.nav_toDo){
+                    startActivity(new Intent(this, ToDoActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_social){
                     return true;
