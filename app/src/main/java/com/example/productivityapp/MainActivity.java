@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         modoSwitch = findViewById(R.id.modo_switch);
         modoText = findViewById(R.id.modo_text);
 
-        if (modoSwitch.isActivated()) {
+        if (modoSwitch.isChecked()) {
             switchBreakMode();
         } else {
             switchStudyMode();
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 isTimerRunning = false;
                 timerButton.setText(R.string.iniciarTextoBoton);
             } else {
-                startTimer(modoSwitch.isActivated() ? MainActivity.BREAK_TIME : MainActivity.STUDY_TIME);
+                startTimer(modoSwitch.isChecked() ? MainActivity.BREAK_TIME : MainActivity.STUDY_TIME);
                 isTimerRunning = true;
                 timerButton.setText(R.string.detenerTextoBoton);
             }
@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         sp.setAdapter(adapter);
     }
 
-    /* Cuando se selecciona uno de los botones / ítems*/
     private NavigationBarView.OnItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
                 int itemId = item.getItemId();
@@ -150,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     throw new IllegalStateException("Unexpected value: " + item.getItemId());
                 }
-            };
+    };
 
     private void startTimer(int minutes) {
         timerDuration = minutes * 60;
