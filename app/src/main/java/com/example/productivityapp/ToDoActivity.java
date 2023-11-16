@@ -8,6 +8,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.Todo;
@@ -26,6 +27,8 @@ import java.util.List;
 
 public class ToDoActivity extends AppCompatActivity {
 
+    public static final String TODO_SELECTED = "todo_selected";
+
     private BottomNavigationView navView;
     private RecyclerView rv;
 
@@ -41,17 +44,12 @@ public class ToDoActivity extends AppCompatActivity {
 
         todos = AppDatabase.getDatabase(this).getTaskDAO().getAll();
 
-        ListTodosAdapter lta = new ListTodosAdapter(this, todos);
+        ListTodosAdapter lta = new ListTodosAdapter(this, todos, todo -> clickOnItem(todo));
         rv.setAdapter(lta);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addTodo();
-            }
-        });
+        Button btn = findViewById(R.id.add_btn);
+        btn.setOnClickListener(view -> addTodo());
 
         navView.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -62,13 +60,19 @@ public class ToDoActivity extends AppCompatActivity {
         todos = AppDatabase.getDatabase(this).getTaskDAO().getAll();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
 
-        ListTodosAdapter lta = new ListTodosAdapter(this, todos);
+        ListTodosAdapter lta = new ListTodosAdapter(this, todos, todo -> clickOnItem(todo));
         rv.setAdapter(lta);
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void addTodo() {
         Intent intent = new Intent(ToDoActivity.this, AddTodoActivity.class);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    private void clickOnItem(Todo todo){
+        Intent intent = new Intent(ToDoActivity.this, AddTodoActivity.class);
+        intent.putExtra(TODO_SELECTED, todo);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 
@@ -87,4 +91,5 @@ public class ToDoActivity extends AppCompatActivity {
             throw new IllegalStateException("Unexpected value: " + item.getItemId());
         }
     };
+
 }

@@ -42,6 +42,7 @@ public class Todo implements Parcelable {
     }
 
     protected Todo(Parcel in) {
+        this.id = in.readInt();
         this.title = in.readString();
         this.description = in.readString();
         this.limitDate = LocalDate.parse(in.readString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -77,7 +78,21 @@ public class Todo implements Parcelable {
         return this.finished;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLimitDate(LocalDate limitDate) {
+        this.limitDate = limitDate;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
 
     @Override
     public int describeContents() {
@@ -86,6 +101,7 @@ public class Todo implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(limitDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));

@@ -4,11 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.productivityapp.model.Todo;
 import com.google.android.material.snackbar.Snackbar;
@@ -16,8 +17,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.example.productivityapp.model.AppDatabase;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AddTodoActivity extends AppCompatActivity {
@@ -31,7 +34,11 @@ public class AddTodoActivity extends AppCompatActivity {
     private Button btGuardar;
     private Button btCancelar;
 
+    private Todo todo;
+
     private Map<String, Todo.Priority> priorityMap;
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +54,17 @@ public class AddTodoActivity extends AppCompatActivity {
         this.btGuardar = findViewById(R.id.btGuardar);
         this.btCancelar = findViewById(R.id.btCancelar);
 
-        this.btGuardar.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                añadirTarea();
-            }
-        });
-        this.btCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { cancelar(); }
-        });
+        this.btGuardar.setOnClickListener(view -> addTarea());
+        this.btCancelar.setOnClickListener(view -> cancelar());
+
         cargarDatosSP();
+
+        Intent intent = getIntent();
+        todo = intent.getParcelableExtra(ToDoActivity.TODO_SELECTED);
+
+        if (todo != null) {
+            fillData();
+        }
     }
 
     private void loadPriorityMap() {
@@ -70,23 +77,47 @@ public class AddTodoActivity extends AppCompatActivity {
         this.priorityMap = priorityMap;
     }
 
-    private void añadirTarea(){
+    private void addTarea(){
         if (validarCampos()) {
-            Todo tarea = new Todo(this.txTitulo.getText().toString(),
-                    this.txDescripcion.getText().toString(),
-                    LocalDate.now().plusDays(30),
-                    priorityMap.get(spPrioridad.getSelectedItem().toString()),
-                    false);
-            this.appDatabase.getTaskDAO().add(tarea);
+            if (todo == null) {
+                Todo tarea = new Todo(this.txTitulo.getText().toString(),
+                        this.txDescripcion.getText().toString(),
+                        LocalDate.parse(this.txFechaLimite.getText().toString(), formatter),
+                        priorityMap.get(spPrioridad.getSelectedItem().toString()),
+                        false);
+                this.appDatabase.getTaskDAO().add(tarea);
 
-            Snackbar.make(findViewById(R.id.layoutAddTodo), "Tarea añadida",
-                    Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.layoutAddTodo), R.string.crear_tarea,
+                        Snackbar.LENGTH_LONG).show();
+            } else {
+                todo.setTitle(this.txTitulo.getText().toString());
+                todo.setDescription(this.txDescripcion.getText().toString());
+                todo.setLimitDate(LocalDate.parse(this.txFechaLimite.getText().toString(), formatter));
+                todo.setPriority(priorityMap.get(spPrioridad.getSelectedItem().toString()));
+
+                this.appDatabase.getTaskDAO().update(todo);
+                Log.i("WTF", "actualizado");
+
+                Snackbar.make(findViewById(R.id.layoutAddTodo), R.string.editar_tarea,
+                        Snackbar.LENGTH_LONG).show();
+            }
+
 
             Intent intentResultado = getIntent();
             setResult(RESULT_OK, intentResultado);
             finish();
         } else {
-            Snackbar.make(findViewById(R.id.layoutAddTodo), "No se puede añadir la tarea",
+            int txt;
+
+            if (!validarFecha(this.txFechaLimite.getText().toString())) {
+                txt = R.string.error_campo_fecha;
+            } else if (LocalDate.parse(this.txFechaLimite.getText().toString(), formatter).isBefore(LocalDate.now())) {
+                txt = R.string.error_fecha_anterior;
+            } else {
+                txt = R.string.error_campos_tarea;
+            }
+
+            Snackbar.make(findViewById(R.id.layoutAddTodo), txt,
                     Snackbar.LENGTH_LONG).show();
         }
     }
@@ -98,15 +129,30 @@ public class AddTodoActivity extends AppCompatActivity {
     }
 
     private boolean validarCampos(){
-        if(this.txTitulo.getText().toString().isEmpty()) return false;
-        if(this.txDescripcion.getText().toString().isEmpty()) return false;
-        if(this.txFechaLimite.getText().toString().isEmpty()) return false;
+        if (this.txTitulo.getText().toString().isEmpty()) return false;
+        if (this.txDescripcion.getText().toString().isEmpty()) return false;
+        if (this.txFechaLimite.getText().toString().isEmpty()) return false;
+        if (!validarFecha(this.txFechaLimite.getText().toString())) return false;
+        if (!validarFechaTiempoValido( LocalDate.parse(this.txFechaLimite.getText().toString(), formatter))) return false;
 
         return true;
     }
 
+    private boolean validarFecha(String date) {
+        try {
+            LocalDate.parse(date, formatter);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean validarFechaTiempoValido(LocalDate date) {
+        return !LocalDate.parse(this.txFechaLimite.getText().toString(), formatter).isBefore(LocalDate.now());
+    }
+
     private void cargarDatosSP(){
-        ArrayList<String> prioridad = new ArrayList<>();
+        List<String> prioridad = new ArrayList<>();
         prioridad.add("Baja");
         prioridad.add("Media");
         prioridad.add("Alta");
@@ -116,5 +162,23 @@ public class AddTodoActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spPrioridad.setAdapter(adapter);
+    }
+
+    private void fillData() {
+        ((TextView) findViewById(R.id.txTareaNueva)).setText(R.string.editar_tarea_titulo);
+        txTitulo.setText(todo.getTitle());
+        txDescripcion.setText(todo.getDescription());
+        txFechaLimite.setText(todo.getLimitDate().format(formatter));
+
+        int index = 0;
+
+        if (todo.getPriority() == Todo.Priority.HIGH) {
+            index = 2;
+        } else if (todo.getPriority() == Todo.Priority.MEDIUM) {
+            index = 1;
+        }
+
+        spPrioridad.setSelection(index);
+
     }
 }

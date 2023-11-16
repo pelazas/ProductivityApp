@@ -17,13 +17,21 @@ import java.util.List;
 
 public class ListTodosAdapter extends RecyclerView.Adapter<ListTodosAdapter.TodoViewHolder> {
 
+    private final static int MAX_CHARACTERS_TITLE = 12;
+
     private Context context;
     private List<Todo> todos;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+    private OnItemClickListener listener;
 
-    public ListTodosAdapter(Context context, List<Todo> todos) {
+    public ListTodosAdapter(Context context, List<Todo> todos, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.todos = todos;
+        this.listener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Todo todo);
     }
 
     @NonNull
@@ -39,10 +47,20 @@ public class ListTodosAdapter extends RecyclerView.Adapter<ListTodosAdapter.Todo
     public void onBindViewHolder(@NonNull ListTodosAdapter.TodoViewHolder holder, int position) {
         Todo todo = todos.get(position);
 
-        holder.titleText.setText(todo.getTitle());
+        holder.titleText.setText(shortenString(todo.getTitle()));
         holder.limitDateText.setText(todo.getLimitDate().format(formatter));
         holder.priorityText.setText(todo.getPriority().name());
         holder.priorityText.setBackgroundResource(getBackgroundForPriority(todo.getPriority()));
+
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(todo));
+    }
+
+    public static String shortenString(String input) {
+        if (input.length() > MAX_CHARACTERS_TITLE) {
+            return input.substring(0, MAX_CHARACTERS_TITLE) + "...";
+        } else {
+            return input;
+        }
     }
 
     private int getBackgroundForPriority(Todo.Priority priority) {
