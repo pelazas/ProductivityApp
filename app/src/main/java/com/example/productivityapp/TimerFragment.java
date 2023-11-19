@@ -1,7 +1,13 @@
 package com.example.productivityapp;
 
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RotateDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.Todo;
@@ -23,7 +30,7 @@ import com.example.productivityapp.utils.Formatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimerFragment extends Fragment {
+public class TimerFragment extends Fragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int STUDY_TIME = 25;
     private static final int BREAK_TIME = 5;
 
@@ -33,6 +40,7 @@ public class TimerFragment extends Fragment {
     private Switch modoSwitch;
     private ProgressBar circularProgressBar;
     private TextView modoText;
+    private SharedPreferences sharedPreferences;
 
     private boolean isTimerRunning = false;
     private int timerDuration;
@@ -47,7 +55,6 @@ public class TimerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timer, container, false);
     }
 
@@ -61,6 +68,11 @@ public class TimerFragment extends Fragment {
         modoSwitch = view.findViewById(R.id.modo_switch);
         circularProgressBar = view.findViewById(R.id.circularProgressBar);
         modoText = view.findViewById(R.id.modo_text);
+
+        setupSharedPreferences();
+
+        String color = sharedPreferences.getString("color_barra", "#1c7ed6");
+        switchBarColor(color);
 
         circularProgressBar = initializeProgressBar();
 
@@ -129,10 +141,6 @@ public class TimerFragment extends Fragment {
         Spinner sp = getView().findViewById(R.id.spAsignaturas);
 
         ArrayList<Todo> asignaturas = new ArrayList<>();
-        /*asignaturas.add("Matemáticas");
-        asignaturas.add("Lengua");
-        asignaturas.add("Física");
-        asignaturas.add("Historia");*/
 
         todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll();
         for(int i = 0; i<todos.size();i++){
@@ -169,5 +177,32 @@ public class TimerFragment extends Fragment {
                 timerButton.setText(R.string.iniciarTextoBoton);
             }
         }.start();
+    }
+
+    private void setupSharedPreferences() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getView().getContext());
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void switchBarColor(String color) {
+        int colorParsed = Color.parseColor(color);
+
+        RotateDrawable drawable = (RotateDrawable) circularProgressBar.getProgressDrawable();
+        GradientDrawable shapeDrawable = (GradientDrawable) ((RotateDrawable) drawable).getDrawable();
+
+        if (shapeDrawable != null) {
+            shapeDrawable.setColors(new int[]{
+                    colorParsed,
+                    colorParsed
+            });
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("color_barra")) {
+            String color = sharedPreferences.getString("color_barra", "#1c7ed6");
+            switchBarColor(color);
+        }
     }
 }

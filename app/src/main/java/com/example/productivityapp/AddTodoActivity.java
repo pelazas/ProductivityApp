@@ -96,7 +96,6 @@ public class AddTodoActivity extends AppCompatActivity {
                 todo.setPriority(priorityMap.get(spPrioridad.getSelectedItem().toString()));
 
                 this.appDatabase.getTaskDAO().update(todo);
-                Log.i("WTF", "actualizado");
 
                 Snackbar.make(findViewById(R.id.layoutAddTodo), R.string.editar_tarea,
                         Snackbar.LENGTH_LONG).show();

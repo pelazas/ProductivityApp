@@ -1,4 +1,5 @@
 package com.example.productivityapp;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             // fragmentManager.replaceFragment(new SocialFragment(), false);
             return true;
         } else if (itemId == R.id.nav_configuration) {
-            // fragmentManager.replaceFragment(new ConfigurationFragment(), false);
+            fragmentManager.replaceFragment(new SettingsFragment(), false);
             return true;
         } else {
             throw new IllegalStateException("Unexpected value: " + item.getItemId());

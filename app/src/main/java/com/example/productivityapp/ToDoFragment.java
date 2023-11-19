@@ -3,6 +3,7 @@ package com.example.productivityapp;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,27 +26,28 @@ public class ToDoFragment extends Fragment {
     public static final String TODO_SELECTED = "todo_selected";
 
     public ToDoFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_to_do, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        loadTodos();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         rv = view.findViewById(R.id.todos_recyclerview);
 
-        todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll();
-
-        ListTodosAdapter lta = new ListTodosAdapter(requireContext(), todos, this::clickOnItem);
-        rv.setAdapter(lta);
-        rv.setLayoutManager(new LinearLayoutManager(requireContext()));
+        loadTodos();
 
         Button btn = view.findViewById(R.id.add_btn);
         btn.setOnClickListener(v -> addTodo());
@@ -60,5 +62,12 @@ public class ToDoFragment extends Fragment {
         Intent intent = new Intent(requireContext(), AddTodoActivity.class);
         intent.putExtra(TODO_SELECTED, todo);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle());
+    }
+
+    private void loadTodos() {
+        todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll();
+        ListTodosAdapter lta = new ListTodosAdapter(requireContext(), todos, this::clickOnItem);
+        rv.setAdapter(lta);
+        rv.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 }
