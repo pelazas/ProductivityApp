@@ -60,7 +60,7 @@ public class AddTodoActivity extends AppCompatActivity {
         cargarDatosSP();
 
         Intent intent = getIntent();
-        todo = intent.getParcelableExtra(ToDoActivity.TODO_SELECTED);
+        todo = intent.getParcelableExtra(ToDoFragment.TODO_SELECTED);
 
         if (todo != null) {
             fillData();

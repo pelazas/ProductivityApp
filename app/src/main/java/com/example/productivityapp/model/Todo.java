@@ -121,4 +121,8 @@ public class Todo implements Parcelable {
             return new Todo[size];
         }
     };
+
+    public String toString(){
+        return this.title;
+    }
 }
