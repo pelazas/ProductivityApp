@@ -34,27 +34,16 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.replaceFragment(new TimerFragment(), false);
             return true;
         } else if (itemId == R.id.nav_toDo) {
-            // startActivity(new Intent(this, ToDoActivity.class));
             fragmentManager.replaceFragment(new ToDoFragment(),false);
             return true;
-        /*} else if (itemId == R.id.nav_social) {
-            // Replace with the fragment for social functionality
-            fragmentManager.replaceFragment(new SocialFragment(), false);
-            return true;*/
+        } else if (itemId == R.id.nav_social) {
+            // fragmentManager.replaceFragment(new SocialFragment(), false);
+            return true;
+        } else if (itemId == R.id.nav_configuration) {
+            // fragmentManager.replaceFragment(new ConfigurationFragment(), false);
+            return true;
         } else {
             throw new IllegalStateException("Unexpected value: " + item.getItemId());
         }
     };
-
-    public void replaceFragment(Fragment fragment, boolean addToBackStack) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-
-        if (addToBackStack) {
-            transaction.addToBackStack(null);
-        }
-
-        transaction.commit();
-    }
-
 }
