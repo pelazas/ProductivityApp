@@ -22,5 +22,11 @@ public interface TaskDAO {
 
     @Query("select * from todos")
     List<Todo> getAll();
+
+    @Query("select * from todos where state like :state")
+    List<Todo> getAllActive(String state);
+
+    @Query("update todos set state= :state where id= :tareaId")
+    void updateFromRemove(int tareaId, String state);
 }
 

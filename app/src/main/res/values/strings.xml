@@ -10,6 +10,7 @@
     <string name="medium_priority">Media</string>
     <string name="high_priority">Alta</string>
     <string name="crear_tarea">Tarea añadida</string>
+    <string name="borrar_tarea">Tarea eliminada</string>
     <string name="editar_tarea">Tarea editada</string>
     <string name="editar_tarea_titulo">Editar tarea</string>
     <string name="error_campos_tarea">Los campos no pueden estar vacíos</string>

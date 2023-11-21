@@ -10,6 +10,22 @@
             app:title="Color de la barra"
             app:useSimpleSummaryProvider="true" />
 
+        <ListPreference
+            app:defaultValue="25"
+            app:entries="@array/study_time_entries"
+            app:entryValues="@array/study_time_values"
+            app:key="study_time"
+            app:title="Tiempo de estudio"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="5"
+            app:entries="@array/break_time_entries"
+            app:entryValues="@array/break_time_values"
+            app:key="break_time"
+            app:title="Tiempo de descanso"
+            app:useSimpleSummaryProvider="true" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

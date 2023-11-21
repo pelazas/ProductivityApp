@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimerFragment extends Fragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final int STUDY_TIME = 25;
-    private static final int BREAK_TIME = 5;
+    private static final int DEFAULT_STUDY_TIME = 25;
+    private static final int DEFAULT_BREAK_TIME = 5;
 
     private CountDownTimer timer;
     private TextView timerText;
@@ -70,11 +70,13 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         modoText = view.findViewById(R.id.modo_text);
 
         setupSharedPreferences();
+        int initialStudyTime = getSelectedStudyTime();
+        int initialBreakTime = getSelectedBreakTime();
 
         String color = sharedPreferences.getString("color_barra", "#1c7ed6");
         switchBarColor(color);
 
-        circularProgressBar = initializeProgressBar();
+        circularProgressBar = initializeProgressBar(initialStudyTime);
 
         if (modoSwitch.isChecked()) {
             switchBreakMode();
@@ -88,7 +90,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
                 isTimerRunning = false;
                 timerButton.setText(R.string.iniciarTextoBoton);
             } else {
-                startTimer(modoSwitch.isChecked() ? BREAK_TIME : STUDY_TIME);
+                startTimer(modoSwitch.isChecked() ? initialBreakTime : initialStudyTime);
                 isTimerRunning = true;
                 timerButton.setText(R.string.detenerTextoBoton);
             }
@@ -109,9 +111,9 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         });
     }
 
-    private ProgressBar initializeProgressBar() {
+    private ProgressBar initializeProgressBar(int studyTime) {
         ProgressBar pb = getView().findViewById(R.id.circularProgressBar);
-        timerDuration = STUDY_TIME * 60;
+        timerDuration = studyTime * 60;
 
         pb.setMax(timerDuration);
         pb.setProgress(timerDuration);
@@ -121,18 +123,20 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
     }
 
     private void switchBreakMode() {
-        timerText.setText(Formatter.formatTime(BREAK_TIME, 0));
+        int time = getSelectedBreakTime();
+        timerText.setText(Formatter.formatTime(time, 0));
         modoText.setText(R.string.modo_descanso);
-        timerDuration = BREAK_TIME * 60;
+        timerDuration = time * 60;
 
         circularProgressBar.setMax(timerDuration);
         circularProgressBar.setProgress(timerDuration);
     }
 
     private void switchStudyMode() {
-        timerText.setText(Formatter.formatTime(STUDY_TIME, 0));
+        int time = getSelectedStudyTime();
+        timerText.setText(Formatter.formatTime(time, 0));
         modoText.setText(R.string.modo_estudio);
-        timerDuration = STUDY_TIME * 60;
+        timerDuration = time * 60;
 
         circularProgressBar.setMax(timerDuration);
         circularProgressBar.setProgress(timerDuration);
@@ -144,7 +148,8 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
 
         todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll();
         for(int i = 0; i<todos.size();i++){
-            asignaturas.add(todos.get(i));
+            if(!todos.get(i).getState().equals(Todo.State.CANCEL))
+                asignaturas.add(todos.get(i));
         }
 
         ArrayAdapter<Todo> adapter = new ArrayAdapter<>(
@@ -204,5 +209,17 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
             String color = sharedPreferences.getString("color_barra", "#1c7ed6");
             switchBarColor(color);
         }
+    }
+
+    private int getSelectedStudyTime() {
+        // Read the selected study time from SharedPreferences, use DEFAULT_STUDY_TIME if not found
+        String studyTimeStr = sharedPreferences.getString("study_time", String.valueOf(DEFAULT_STUDY_TIME));
+        return Integer.parseInt(studyTimeStr);
+    }
+
+    private int getSelectedBreakTime() {
+        // Read the selected break time from SharedPreferences, use DEFAULT_BREAK_TIME if not found
+        String breakTimeStr = sharedPreferences.getString("break_time", String.valueOf(DEFAULT_BREAK_TIME));
+        return Integer.parseInt(breakTimeStr);
     }
 }

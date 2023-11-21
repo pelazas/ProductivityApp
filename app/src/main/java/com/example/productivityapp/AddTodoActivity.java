@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +33,7 @@ public class AddTodoActivity extends AppCompatActivity {
     private EditText txFechaLimite;
     private Spinner spPrioridad;
     private Button btGuardar;
-    private Button btCancelar;
+    private Button btBorrar;
 
     private Todo todo;
 
@@ -52,10 +53,9 @@ public class AddTodoActivity extends AppCompatActivity {
         this.txFechaLimite = findViewById(R.id.editTxFecha);
         this.spPrioridad = findViewById(R.id.spPrioridad);
         this.btGuardar = findViewById(R.id.btGuardar);
-        this.btCancelar = findViewById(R.id.btCancelar);
+        this.btBorrar = findViewById(R.id.btBorrar);
 
         this.btGuardar.setOnClickListener(view -> addTarea());
-        this.btCancelar.setOnClickListener(view -> cancelar());
 
         cargarDatosSP();
 
@@ -65,6 +65,7 @@ public class AddTodoActivity extends AppCompatActivity {
         if (todo != null) {
             fillData();
         }
+        activeButtonBorrar();
     }
 
     private void loadPriorityMap() {
@@ -84,7 +85,7 @@ public class AddTodoActivity extends AppCompatActivity {
                         this.txDescripcion.getText().toString(),
                         LocalDate.parse(this.txFechaLimite.getText().toString(), formatter),
                         priorityMap.get(spPrioridad.getSelectedItem().toString()),
-                        false);
+                        Todo.State.TO_DO);
                 this.appDatabase.getTaskDAO().add(tarea);
 
                 Snackbar.make(findViewById(R.id.layoutAddTodo), R.string.crear_tarea,
@@ -121,7 +122,17 @@ public class AddTodoActivity extends AppCompatActivity {
         }
     }
 
-    private void cancelar(){
+
+    private void activeButtonBorrar(){
+        if(todo == null) this.btBorrar.setVisibility(View.INVISIBLE);
+        else this.btBorrar.setOnClickListener(view -> borrar());
+    }
+    private void borrar(){
+        this.appDatabase.getTaskDAO().updateFromRemove(todo.getId(), "CANCEL");
+
+        Snackbar.make(findViewById(R.id.layoutAddTodo), R.string.borrar_tarea,
+                Snackbar.LENGTH_LONG).show();
+
         Intent intentResultado = getIntent();
         setResult(RESULT_CANCELED, intentResultado);
         finish();

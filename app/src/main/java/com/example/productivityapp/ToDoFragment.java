@@ -65,7 +65,7 @@ public class ToDoFragment extends Fragment {
     }
 
     private void loadTodos() {
-        todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll();
+        todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAllActive("TO_DO");
         ListTodosAdapter lta = new ListTodosAdapter(requireContext(), todos, this::clickOnItem);
         rv.setAdapter(lta);
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));

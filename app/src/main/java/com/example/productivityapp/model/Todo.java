@@ -21,24 +21,28 @@ public class Todo implements Parcelable {
         LOW, MEDIUM, HIGH
     }
 
+    public enum State {
+        TO_DO, CANCEL, FINISHED
+    }
+
     @PrimaryKey(autoGenerate = true) private int id;
     @ColumnInfo(name="title") private String title;
     @ColumnInfo(name="description") private String description;
     @ColumnInfo(name="limit_date") private LocalDate limitDate;
     @ColumnInfo(name="priority") private Priority priority;
-    @ColumnInfo(name="finished") private boolean finished;
+    @ColumnInfo(name="state") private State state;
 
     @Ignore
     public Todo(String title, LocalDate limitDate, Priority priority) {
-        this(title, "", limitDate, priority, false);
+        this(title, "", limitDate, priority, State.TO_DO);
     }
 
-    public Todo(String title, String description, LocalDate limitDate, Priority priority, boolean finished) {
+    public Todo(String title, String description, LocalDate limitDate, Priority priority, State state) {
         this.title = title;
         this.description = description;
         this.limitDate = limitDate;
         this.priority = priority;
-        this.finished = finished;
+        this.state = state;
     }
 
     protected Todo(Parcel in) {
@@ -47,7 +51,7 @@ public class Todo implements Parcelable {
         this.description = in.readString();
         this.limitDate = LocalDate.parse(in.readString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.priority = Priority.valueOf(in.readString());
-        this.finished = Boolean.valueOf(in.readString());
+        this.state = State.valueOf(in.readString());
     }
 
     public int getId() {
@@ -74,8 +78,8 @@ public class Todo implements Parcelable {
         return this.priority;
     }
 
-    public boolean isFinished() {
-        return this.finished;
+    public State getState() {
+        return this.state;
     }
 
     public void setTitle(String title) {
@@ -106,7 +110,7 @@ public class Todo implements Parcelable {
         dest.writeString(description);
         dest.writeString(limitDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         dest.writeString(priority.name());
-        dest.writeString(String.valueOf(finished));
+        dest.writeString(state.toString());
     }
 
     public static final Creator<Todo> CREATOR = new Creator<Todo>() {
