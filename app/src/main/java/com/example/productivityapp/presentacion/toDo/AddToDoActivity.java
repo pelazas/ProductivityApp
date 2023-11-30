@@ -1,10 +1,9 @@
-package com.example.productivityapp;
+package com.example.productivityapp.presentacion.toDo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,7 +11,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.productivityapp.model.Todo;
+import com.example.productivityapp.R;
+import com.example.productivityapp.model.ToDo;
+import com.example.productivityapp.presentacion.toDo.ToDoFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import com.example.productivityapp.model.AppDatabase;
@@ -24,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddTodoActivity extends AppCompatActivity {
+public class AddToDoActivity extends AppCompatActivity {
 
     private AppDatabase appDatabase;
 
@@ -35,9 +36,9 @@ public class AddTodoActivity extends AppCompatActivity {
     private Button btGuardar;
     private Button btBorrar;
 
-    private Todo todo;
+    private ToDo todo;
 
-    private Map<String, Todo.Priority> priorityMap;
+    private Map<String, ToDo.Priority> priorityMap;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -69,11 +70,11 @@ public class AddTodoActivity extends AppCompatActivity {
     }
 
     private void loadPriorityMap() {
-        Map<String, Todo.Priority> priorityMap = new HashMap<>();
+        Map<String, ToDo.Priority> priorityMap = new HashMap<>();
 
-        priorityMap.put("Baja", Todo.Priority.LOW);
-        priorityMap.put("Media", Todo.Priority.MEDIUM);
-        priorityMap.put("Alta", Todo.Priority.HIGH);
+        priorityMap.put("Baja", ToDo.Priority.LOW);
+        priorityMap.put("Media", ToDo.Priority.MEDIUM);
+        priorityMap.put("Alta", ToDo.Priority.HIGH);
 
         this.priorityMap = priorityMap;
     }
@@ -81,11 +82,11 @@ public class AddTodoActivity extends AppCompatActivity {
     private void addTarea(){
         if (validarCampos()) {
             if (todo == null) {
-                Todo tarea = new Todo(this.txTitulo.getText().toString(),
+                ToDo tarea = new ToDo(this.txTitulo.getText().toString(),
                         this.txDescripcion.getText().toString(),
                         LocalDate.parse(this.txFechaLimite.getText().toString(), formatter),
                         priorityMap.get(spPrioridad.getSelectedItem().toString()),
-                        Todo.State.TO_DO);
+                        ToDo.State.TO_DO);
                 this.appDatabase.getTaskDAO().add(tarea);
 
                 Snackbar.make(findViewById(R.id.layoutAddTodo), R.string.crear_tarea,
@@ -182,9 +183,9 @@ public class AddTodoActivity extends AppCompatActivity {
 
         int index = 0;
 
-        if (todo.getPriority() == Todo.Priority.HIGH) {
+        if (todo.getPriority() == ToDo.Priority.HIGH) {
             index = 2;
-        } else if (todo.getPriority() == Todo.Priority.MEDIUM) {
+        } else if (todo.getPriority() == ToDo.Priority.MEDIUM) {
             index = 1;
         }
 

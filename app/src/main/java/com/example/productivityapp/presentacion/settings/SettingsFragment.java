@@ -1,8 +1,10 @@
-package com.example.productivityapp;
+package com.example.productivityapp.presentacion.settings;
 
 import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.example.productivityapp.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 

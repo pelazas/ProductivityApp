@@ -1,7 +1,6 @@
-package com.example.productivityapp;
+package com.example.productivityapp.presentacion.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,42 +9,43 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.productivityapp.model.Todo;
+import com.example.productivityapp.R;
+import com.example.productivityapp.model.ToDo;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ListTodosAdapter extends RecyclerView.Adapter<ListTodosAdapter.TodoViewHolder> {
+public class ListToDosAdapter extends RecyclerView.Adapter<ListToDosAdapter.TodoViewHolder> {
 
     private final static int MAX_CHARACTERS_TITLE = 12;
 
     private Context context;
-    private List<Todo> todos;
+    private List<ToDo> todos;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
     private OnItemClickListener listener;
 
-    public ListTodosAdapter(Context context, List<Todo> todos, OnItemClickListener onItemClickListener) {
+    public ListToDosAdapter(Context context, List<ToDo> todos, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.todos = todos;
         this.listener = onItemClickListener;
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Todo todo);
+        void onItemClick(ToDo todo);
     }
 
     @NonNull
     @Override
-    public ListTodosAdapter.TodoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListToDosAdapter.TodoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(context);
         View view = li.inflate(R.layout.recycler_view_todo, parent, false);
 
-        return new ListTodosAdapter.TodoViewHolder(view);
+        return new ListToDosAdapter.TodoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListTodosAdapter.TodoViewHolder holder, int position) {
-        Todo todo = todos.get(position);
+    public void onBindViewHolder(@NonNull ListToDosAdapter.TodoViewHolder holder, int position) {
+        ToDo todo = todos.get(position);
 
         holder.titleText.setText(shortenString(todo.getTitle()));
         holder.limitDateText.setText(todo.getLimitDate().format(formatter));
@@ -63,7 +63,7 @@ public class ListTodosAdapter extends RecyclerView.Adapter<ListTodosAdapter.Todo
         }
     }
 
-    private int getBackgroundForPriority(Todo.Priority priority) {
+    private int getBackgroundForPriority(ToDo.Priority priority) {
         switch (priority) {
             case LOW:
                 return R.drawable.rounded_green_bg;

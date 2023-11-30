@@ -12,19 +12,19 @@ import java.util.List;
 @Dao
 public interface TaskDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void add(Todo tarea);
+    void add(ToDo tarea);
 
     @Update
-    void update(Todo tarea);
+    void update(ToDo tarea);
 
     @Delete
-    void delete(Todo tarea);
+    void delete(ToDo tarea);
 
     @Query("select * from todos")
-    List<Todo> getAll();
+    List<ToDo> getAll();
 
     @Query("select * from todos where state like :state")
-    List<Todo> getAllActive(String state);
+    List<ToDo> getAllActive(String state);
 
     @Query("update todos set state= :state where id= :tareaId")
     void updateFromRemove(int tareaId, String state);

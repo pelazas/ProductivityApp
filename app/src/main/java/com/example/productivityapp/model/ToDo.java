@@ -9,13 +9,11 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.productivityapp.R;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Entity(tableName = "todos")
-public class Todo implements Parcelable {
+public class ToDo implements Parcelable {
 
     public enum Priority {
         LOW, MEDIUM, HIGH
@@ -33,11 +31,11 @@ public class Todo implements Parcelable {
     @ColumnInfo(name="state") private State state;
 
     @Ignore
-    public Todo(String title, LocalDate limitDate, Priority priority) {
+    public ToDo(String title, LocalDate limitDate, Priority priority) {
         this(title, "", limitDate, priority, State.TO_DO);
     }
 
-    public Todo(String title, String description, LocalDate limitDate, Priority priority, State state) {
+    public ToDo(String title, String description, LocalDate limitDate, Priority priority, State state) {
         this.title = title;
         this.description = description;
         this.limitDate = limitDate;
@@ -45,7 +43,7 @@ public class Todo implements Parcelable {
         this.state = state;
     }
 
-    protected Todo(Parcel in) {
+    protected ToDo(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
         this.description = in.readString();
@@ -113,16 +111,16 @@ public class Todo implements Parcelable {
         dest.writeString(state.toString());
     }
 
-    public static final Creator<Todo> CREATOR = new Creator<Todo>() {
+    public static final Creator<ToDo> CREATOR = new Creator<ToDo>() {
 
         @Override
-        public Todo createFromParcel(Parcel parcel) {
-            return new Todo(parcel);
+        public ToDo createFromParcel(Parcel parcel) {
+            return new ToDo(parcel);
         }
 
         @Override
-        public Todo[] newArray(int size) {
-            return new Todo[size];
+        public ToDo[] newArray(int size) {
+            return new ToDo[size];
         }
     };
 

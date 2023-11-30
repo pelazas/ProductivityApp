@@ -1,9 +1,13 @@
-package com.example.productivityapp;
-import android.content.SharedPreferences;
+package com.example.productivityapp.presentacion;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+
+import com.example.productivityapp.FragmentManager;
+import com.example.productivityapp.R;
+import com.example.productivityapp.presentacion.settings.SettingsFragment;
+import com.example.productivityapp.presentacion.social.SocialFragment;
+import com.example.productivityapp.presentacion.timer.TimerFragment;
+import com.example.productivityapp.presentacion.toDo.ToDoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.replaceFragment(new ToDoFragment(),false);
             return true;
         } else if (itemId == R.id.nav_social) {
-            // fragmentManager.replaceFragment(new SocialFragment(), false);
+            fragmentManager.replaceFragment(new SocialFragment(), false);
             return true;
         } else if (itemId == R.id.nav_configuration) {
             fragmentManager.replaceFragment(new SettingsFragment(), false);

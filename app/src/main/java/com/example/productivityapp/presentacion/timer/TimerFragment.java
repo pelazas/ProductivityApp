@@ -1,13 +1,11 @@
-package com.example.productivityapp;
+package com.example.productivityapp.presentacion.timer;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RotateDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +21,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
+import com.example.productivityapp.R;
 import com.example.productivityapp.model.AppDatabase;
-import com.example.productivityapp.model.Todo;
+import com.example.productivityapp.model.ToDo;
 import com.example.productivityapp.utils.Formatter;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
     private int timerDuration;
     private int timeElapsed;
 
-    private List<Todo> todos;
+    private List<ToDo> todos;
 
     public TimerFragment() {
         // Required empty public constructor
@@ -144,15 +143,15 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
     private void cargarDatosSP(){
         Spinner sp = getView().findViewById(R.id.spAsignaturas);
 
-        ArrayList<Todo> asignaturas = new ArrayList<>();
+        ArrayList<ToDo> asignaturas = new ArrayList<>();
 
         todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll();
         for(int i = 0; i<todos.size();i++){
-            if(!todos.get(i).getState().equals(Todo.State.CANCEL))
+            if(!todos.get(i).getState().equals(ToDo.State.CANCEL))
                 asignaturas.add(todos.get(i));
         }
 
-        ArrayAdapter<Todo> adapter = new ArrayAdapter<>(
+        ArrayAdapter<ToDo> adapter = new ArrayAdapter<>(
                 requireContext(), android.R.layout.simple_spinner_item, asignaturas);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 

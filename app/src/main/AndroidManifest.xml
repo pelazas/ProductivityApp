@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ProductivityApp"
         tools:targetApi="31">
         <activity
-            android:name=".AddTodoActivity"
+            android:name=".presentacion.toDo.AddToDoActivity"
             android:exported="false" />
         <activity
             android:name=".SocialActivity"
@@ -23,7 +23,7 @@
             android:name=".ToDoActivity"
             android:exported="false" /> -->
         <activity
-            android:name=".MainActivity"
+            android:name=".presentacion.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

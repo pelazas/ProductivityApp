@@ -10,12 +10,12 @@ public class Converters {
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @TypeConverter
-    public static Todo.Priority fromPriorityString(String value) {
-        return value == null ? null : Todo.Priority.valueOf(value);
+    public static ToDo.Priority fromPriorityString(String value) {
+        return value == null ? null : ToDo.Priority.valueOf(value);
     }
 
     @TypeConverter
-    public static String priorityToString(Todo.Priority priority) {
+    public static String priorityToString(ToDo.Priority priority) {
         return priority == null ? null : priority.name();
     }
 

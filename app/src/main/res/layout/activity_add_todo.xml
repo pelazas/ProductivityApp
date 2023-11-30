@@ -5,7 +5,7 @@
     android:id="@+id/layoutAddTodo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddTodoActivity">
+    tools:context=".presentacion.toDo.AddToDoActivity">
 
     <TextView
         android:id="@+id/txTareaNueva"
