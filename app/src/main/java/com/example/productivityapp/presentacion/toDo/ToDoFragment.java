@@ -27,9 +27,7 @@ public class ToDoFragment extends Fragment {
     private List<ToDo> todos;
     public static final String TODO_SELECTED = "todo_selected";
 
-    public ToDoFragment() {
-
-    }
+    public ToDoFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -28,7 +28,6 @@ import java.util.Map;
 public class AddToDoActivity extends AppCompatActivity {
 
     private AppDatabase appDatabase;
-
     private EditText txTitulo;
     private EditText txDescripcion;
     private EditText txFechaLimite;

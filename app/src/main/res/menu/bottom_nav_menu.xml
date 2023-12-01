@@ -15,9 +15,7 @@
     <item
         android:id="@+id/nav_social"
         android:icon="@drawable/baseline_social_distance_24"
-        android:title="Social"
-        />
-
+        android:title="Social" />
 
     <item
         android:id="@+id/nav_configuration"
