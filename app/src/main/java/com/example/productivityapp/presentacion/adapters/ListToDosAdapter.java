@@ -13,6 +13,7 @@ import com.example.productivityapp.R;
 import com.example.productivityapp.model.ToDo;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListToDosAdapter extends RecyclerView.Adapter<ListToDosAdapter.TodoViewHolder> {
@@ -25,9 +26,16 @@ public class ListToDosAdapter extends RecyclerView.Adapter<ListToDosAdapter.Todo
     private OnItemClickListener listener;
 
     public ListToDosAdapter(Context context, List<ToDo> todos, OnItemClickListener onItemClickListener) {
+        cargarColeccion(todos);
         this.context = context;
-        this.todos = todos;
         this.listener = onItemClickListener;
+    }
+
+    private void cargarColeccion(List<ToDo> todos){
+        this.todos = new ArrayList<ToDo>();
+        for(int i = todos.size() - 1; i >= 0; i--){
+            this.todos.add(todos.get(i));
+        }
     }
 
     public interface OnItemClickListener {

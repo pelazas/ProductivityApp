@@ -19,7 +19,9 @@ import com.example.productivityapp.R;
 import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.ToDo;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Collections;
 
 public class ToDoFragment extends Fragment {
 
@@ -66,8 +68,22 @@ public class ToDoFragment extends Fragment {
 
     private void loadTodos() {
         todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAllActive("TO_DO");
+        sortTaskList();
         ListToDosAdapter lta = new ListToDosAdapter(requireContext(), todos, this::clickOnItem);
         rv.setAdapter(lta);
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
+    }
+
+    private void sortTaskList(){
+        Collections.sort(todos, new Comparator<ToDo>() {
+            @Override
+            public int compare(ToDo e1, ToDo e2) {
+                int comparacionPrioridad = e1.getPriority().compareTo(e2.getPriority());
+                if (comparacionPrioridad == 0) {
+                    return e1.getLimitDate().compareTo(e2.getLimitDate());
+                }
+                return comparacionPrioridad;
+            }
+        });
     }
 }
