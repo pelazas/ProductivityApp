@@ -66,9 +66,9 @@ public class SocialFragment extends Fragment {
     }
 
     private void cargarValores(){
-        List<ToDo> tareasAcabadas = appDatabase.getTaskDAO().getAllActive("TO_DO");
-        txAcabadas.setText(tareasAcabadas.size()+"");
-        List<ToDo> tareasNoAcabadas = appDatabase.getTaskDAO().getAllFinished();
+        List<ToDo> tareasNoAcabadas = appDatabase.getTaskDAO().getAllActive("TO_DO");
         txNoAcabadas.setText(tareasNoAcabadas.size()+"");
+        List<ToDo> tareasAcabadas = appDatabase.getTaskDAO().getAllFinished();
+        txAcabadas.setText(tareasAcabadas.size()+"");
     }
 }
