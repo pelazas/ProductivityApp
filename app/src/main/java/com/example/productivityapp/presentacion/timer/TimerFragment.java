@@ -157,7 +157,6 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         long milisegundos = duration.toMillis();
 
         Intent intent = new Intent(requireContext(), ProgramadaNotification.class);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 requireContext(),
                 ProgramadaNotification.PROGRAMADA_NOTIFICATION_ID,
@@ -171,7 +170,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()
                 || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                    Calendar.getInstance().getTimeInMillis() + 5000,pendingIntent);
+                    Calendar.getInstance().getTimeInMillis() + milisegundos,pendingIntent);
         } else // 31 y sin permiso. Solicitamos
             startActivity(new Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM));
     }

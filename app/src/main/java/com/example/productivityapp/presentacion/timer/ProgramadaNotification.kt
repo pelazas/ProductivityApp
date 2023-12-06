@@ -8,43 +8,17 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 
-/**
- * Un BroadCastReceiver o, en castellano, Receptor de emisiones.
- * Nos obliga a implementar el onReceive.
- * Funcionan en segundo plano ¿qué quiere decir esto?
- * Échale un ojo al Manifest.
- */
 class ProgramadaNotification:BroadcastReceiver() {
 
-    companion object {// Iniciar la actividad desde una clase Java
-
-        @JvmStatic
-        fun startFromJava(context: Context): Intent {
-            val intent = Intent(context, ProgramadaNotification::class.java)
-            context.startActivity(intent)
-            return intent
-        }
-
+    companion object {
         const val PROGRAMADA_CHANNEL = "Programada"
         const val PROGRAMADA_NOTIFICATION_ID = 2
-
-
     }
 
-    /*
-        Cuando nos notifiquen, se activa este método.
-     */
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("MEL", "Entro en el onReceive de ProgramadaNotification")
         crearNotificacionRepetible(context!!)
     }
 
-
-
-    /*
-     * Este código es muy similar al que ya tienes en el MainActivity.
-     * Simplemente, pasamos otra ID.
-     */
     private fun crearNotificacionRepetible(context: Context) {
         val intent = Intent(context, TimerFragment::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
