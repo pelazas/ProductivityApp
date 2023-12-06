@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RotateDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import com.example.productivityapp.R;
 import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.ToDo;
 import com.example.productivityapp.utils.Formatter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,8 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
     private ProgressBar circularProgressBar;
     private TextView modoText;
     private SharedPreferences sharedPreferences;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
 
     private boolean isTimerRunning = false;
     private int timerDuration;
@@ -60,6 +65,8 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         cargarDatosSP();
 
         timerText = view.findViewById(R.id.timer_text);
@@ -145,7 +152,8 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
 
         ArrayList<ToDo> asignaturas = new ArrayList<>();
 
-        todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll();
+        todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll(user.getUid());
+
         for(int i = 0; i<todos.size();i++){
             if(!todos.get(i).getState().equals(ToDo.State.CANCEL))
                 asignaturas.add(todos.get(i));
