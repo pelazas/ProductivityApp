@@ -36,7 +36,7 @@
             android:exported="true" />
 
         <receiver
-            android:name=".presentacion.timer.NotificacionProgramada"
+            android:name=".presentacion.timer.NP"
             android:enabled="true"/>
 
     </application>

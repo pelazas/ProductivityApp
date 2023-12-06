@@ -11,7 +11,7 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-public class NotificacionProgramada extends BroadcastReceiver {
+public class NP extends BroadcastReceiver {
 
     private final static String PROGRAMADA_CHANNEL = "Programada";
     private final static int PROGRAMADA_NOTIFICATION_ID = 1;
@@ -28,7 +28,7 @@ public class NotificacionProgramada extends BroadcastReceiver {
     public static void scheduleNotification(Context context, long delayInMillis) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent = new Intent(context, NotificacionProgramada.class);
+        Intent intent = new Intent(context, NP.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent,  PendingIntent.FLAG_IMMUTABLE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
