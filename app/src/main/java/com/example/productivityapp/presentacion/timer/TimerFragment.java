@@ -1,9 +1,19 @@
 package com.example.productivityapp.presentacion.timer;
 
+import static android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM;
+
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RotateDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -29,10 +39,14 @@ import com.example.productivityapp.utils.Formatter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class TimerFragment extends Fragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    public static final String SIMPLE_CHANNEL = "Canal simple";
     private static final int DEFAULT_STUDY_TIME = 25;
     private static final int DEFAULT_BREAK_TIME = 5;
 
@@ -90,6 +104,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
             switchStudyMode();
         }
 
+        crearCanalNotificacion();
         timerButton.setOnClickListener(v -> {
             if (isTimerRunning) {
                 timer.cancel();
@@ -99,6 +114,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
                 startTimer(modoSwitch.isChecked() ? initialBreakTime : initialStudyTime);
                 isTimerRunning = true;
                 timerButton.setText(R.string.detenerTextoBoton);
+                crearNotificacionProgramada();
             }
         });
 
@@ -126,6 +142,44 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         pb.setRotation(0);
 
         return pb;
+    }
+
+    private void crearCanalNotificacion() {
+        //Si API 26 o superior.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel canal = new NotificationChannel(this.SIMPLE_CHANNEL,
+                                    "Productivity App",
+                                    NotificationManager.IMPORTANCE_DEFAULT);
+            //Añadimos el canal al servicio de notificaciones.
+            NotificationManager notificationManager = (NotificationManager) new Activity()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(canal);
+        }
+    }
+    private void crearNotificacionProgramada() {
+        String tiempo = String.valueOf(this.timerText.getText());
+        long minutos = Long.parseLong(tiempo.split(":")[0]);
+
+        Duration duration = Duration.ofMinutes(minutos);
+        long milisegundos = duration.toMillis();
+
+        Intent intent = new Intent(requireContext(), ProgramadaNotification.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                requireContext(),
+                ProgramadaNotification.PROGRAMADA_NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+
+        AlarmManager alarmManager = (AlarmManager) new Activity()
+                .getSystemService(Context.ALARM_SERVICE);
+        //API 31+ y permiso para alarmas exactas o API < 31
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()
+                || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                    Calendar.getInstance().getTimeInMillis() + milisegundos,pendingIntent);
+        } else // 31 y sin permiso. Solicitamos
+            startActivity(new Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM));
     }
 
     private void switchBreakMode() {
