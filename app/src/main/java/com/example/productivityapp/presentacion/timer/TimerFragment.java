@@ -1,9 +1,14 @@
 package com.example.productivityapp.presentacion.timer;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RotateDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -26,7 +31,9 @@ import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.ToDo;
 import com.example.productivityapp.utils.Formatter;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class TimerFragment extends Fragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -92,6 +99,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
                 startTimer(modoSwitch.isChecked() ? initialBreakTime : initialStudyTime);
                 isTimerRunning = true;
                 timerButton.setText(R.string.detenerTextoBoton);
+                crearNotificacionProgramada();
             }
         });
 
@@ -119,6 +127,19 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         pb.setRotation(0);
 
         return pb;
+    }
+
+    private void crearNotificacionProgramada() {
+        String tiempo = String.valueOf(this.timerText.getText());
+        String[] partes = tiempo.split(":");
+        long minutos = Long.parseLong(partes[0]);
+
+        Duration duration = Duration.ofMinutes(minutos);
+        long milisegundos = duration.toMillis();
+
+        NotificacionProgramada.scheduleNotification(
+                requireContext(),
+                milisegundos);
     }
 
     private void switchBreakMode() {
