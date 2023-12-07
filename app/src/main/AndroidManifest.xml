@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProductivityApp"
         tools:targetApi="31">
+
         <activity
             android:name=".presentacion.LoginActivity"
             android:exported="true">
@@ -36,8 +37,9 @@
             android:exported="true" />
 
         <receiver
-            android:name=".presentacion.timer.NP"
-            android:enabled="true"/>
+            android:name=".presentacion.timer.NotificacionProgramada"
+            android:exported="false">
+        </receiver>
 
     </application>
 
