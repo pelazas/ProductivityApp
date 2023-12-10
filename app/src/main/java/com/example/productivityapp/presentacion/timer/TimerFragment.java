@@ -45,8 +45,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class TimerFragment extends Fragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
-
     public static final String SIMPLE_CHANNEL = "Canal simple";
+    public final static int PROGRAMADA_NOTIFICATION_ID = 1;
     private static final int DEFAULT_STUDY_TIME = 25;
     private static final int DEFAULT_BREAK_TIME = 5;
 
@@ -147,14 +147,16 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
     private void crearCanalNotificacion() {
         //Si API 26 o superior.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel canal = new NotificationChannel(this.SIMPLE_CHANNEL,
-                                    "Productivity App",
-                                    NotificationManager.IMPORTANCE_DEFAULT);
-            //Añadimos el canal al servicio de notificaciones.
-            NotificationManager notificationManager = (NotificationManager) new Activity()
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            String idCanal = SIMPLE_CHANNEL;
+            String nombreCanal = "Productivity App";
+            int importancia = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel canal = new NotificationChannel(idCanal, nombreCanal, importancia);
+
+            NotificationManager notificationManager = (NotificationManager) requireActivity().getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(canal);
         }
+
     }
     private void crearNotificacionProgramada() {
         String tiempo = String.valueOf(this.timerText.getText());
@@ -163,23 +165,46 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         Duration duration = Duration.ofMinutes(minutos);
         long milisegundos = duration.toMillis();
 
-        Intent intent = new Intent(requireContext(), ProgramadaNotification.class);
+        Intent intent = new Intent(requireContext(), NotificacionProgramada.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 requireContext(),
-                ProgramadaNotification.PROGRAMADA_NOTIFICATION_ID,
+                PROGRAMADA_NOTIFICATION_ID,
                 intent,
-                PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        AlarmManager alarmManager = (AlarmManager) new Activity()
-                .getSystemService(Context.ALARM_SERVICE);
-        //API 31+ y permiso para alarmas exactas o API < 31
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()
+        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+
+        if (alarmManager != null) {
+            long futureInMillis = System.currentTimeMillis() + 5000; // 5 segundos desde ahora
+
+            // Programar la notificación para que aparezca en 5 segundos.
+            alarmManager.set(AlarmManager.RTC_WAKEUP, futureInMillis, pendingIntent);
+        }
+
+
+
+
+
+
+        /*
+        Intent intent = new Intent(requireContext(), NotificacionProgramada.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                requireContext(),
+                NotificacionProgramada.PROGRAMADA_NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+        // API 31+ y permiso para alarmas exactas o API < 31
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms())
                 || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                    Calendar.getInstance().getTimeInMillis() + milisegundos,pendingIntent);
-        } else // 31 y sin permiso. Solicitamos
-            startActivity(new Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM));
+                    Calendar.getInstance().getTimeInMillis() + 5000, pendingIntent);
+        } else { // 31 y sin permiso. Solicitamos
+            requireContext().startActivity(new Intent("android.permission.SCHEDULE_EXACT_ALARM"));
+        }
+         */
     }
 
     private void switchBreakMode() {
