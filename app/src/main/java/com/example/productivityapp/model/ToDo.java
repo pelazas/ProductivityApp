@@ -102,6 +102,10 @@ public class ToDo implements Parcelable {
         this.priority = priority;
     }
 
+    public void setState(State state) {
+        this.state = state;
+    }
+
     @Override
     public int describeContents() {
         return 0;

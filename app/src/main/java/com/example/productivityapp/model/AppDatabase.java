@@ -12,7 +12,7 @@ public class AppDatabase {
     private TaskDAO taskDao = new TaskDAOImpl();
     private static AppDatabase db;
 
-    public static AppDatabase getDatabase(Context applicationContext) {
+    public static AppDatabase getDatabase() {
         if (db == null) {
             db = new AppDatabase();
         }

@@ -239,7 +239,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
 
         ArrayList<ToDo> asignaturas = new ArrayList<>();
 
-        todos = AppDatabase.getDatabase(requireContext()).getTaskDAO().getAll(user.getUid());
+        todos = AppDatabase.getDatabase().getTaskDAO().getAll(user.getUid());
 
         for(int i = 0; i<todos.size();i++){
             if(!todos.get(i).getState().equals(ToDo.State.CANCEL))

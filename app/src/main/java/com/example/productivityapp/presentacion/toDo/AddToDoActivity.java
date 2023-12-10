@@ -49,7 +49,7 @@ public class AddToDoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_todo);
-        appDatabase = AppDatabase.getDatabase(this);
+        appDatabase = AppDatabase.getDatabase();
         loadPriorityMap();
 
         this.txTitulo = findViewById(R.id.editTxTitulo);

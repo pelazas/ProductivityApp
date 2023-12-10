@@ -1,7 +1,6 @@
 package com.example.productivityapp.presentacion.social;
 
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +21,6 @@ import com.example.productivityapp.model.TimeDataFormatted;
 import com.example.productivityapp.model.ToDo;
 import com.example.productivityapp.model.UserTimesManager;
 import com.example.productivityapp.presentacion.LoginActivity;
-import com.example.productivityapp.presentacion.MainActivity;
-import com.example.productivityapp.presentacion.RegisterActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -60,7 +56,7 @@ public class SocialFragment extends Fragment {
         // Retrieve data from Firebase and update the RecyclerView
         fetchDataFromFirebase();
 
-        appDatabase = AppDatabase.getDatabase(requireContext());
+        appDatabase = AppDatabase.getDatabase();
         txAcabadas = root.findViewById(R.id.txNumTareasAcabadas);
         txNoAcabadas = root.findViewById(R.id.txNumTareasNoAcabadas);
         logoutButton = root.findViewById(R.id.logout);
@@ -104,9 +100,9 @@ public class SocialFragment extends Fragment {
     }
 
     private void cargarValores(){
-        List<ToDo> tareasAcabadas = appDatabase.getTaskDAO().getAllActive(user.getUid(), "TO_DO");
-        txAcabadas.setText(tareasAcabadas.size()+"");
-        List<ToDo> tareasNoAcabadas = appDatabase.getTaskDAO().getAllFinished(user.getUid());
-        txNoAcabadas.setText(tareasNoAcabadas.size()+"");
+        List<ToDo> tareasActivas = appDatabase.getTaskDAO().getAllActive(user.getUid(), "TO_DO");
+        List<ToDo> tareasTerminadas = appDatabase.getTaskDAO().getAllFinished(user.getUid());
+        txAcabadas.setText(String.valueOf(tareasTerminadas.size()));
+        txNoAcabadas.setText(String.valueOf(tareasActivas.size()));
     }
 }
