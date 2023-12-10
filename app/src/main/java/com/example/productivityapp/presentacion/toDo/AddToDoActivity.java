@@ -17,6 +17,8 @@ import com.example.productivityapp.presentacion.toDo.ToDoFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import com.example.productivityapp.model.AppDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +36,8 @@ public class AddToDoActivity extends AppCompatActivity {
     private Spinner spPrioridad;
     private Button btGuardar;
     private Button btBorrar;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
 
     private ToDo todo;
 
@@ -54,6 +58,8 @@ public class AddToDoActivity extends AppCompatActivity {
         this.spPrioridad = findViewById(R.id.spPrioridad);
         this.btGuardar = findViewById(R.id.btGuardar);
         this.btBorrar = findViewById(R.id.btBorrar);
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
 
         this.btGuardar.setOnClickListener(view -> addTarea());
 
@@ -81,7 +87,7 @@ public class AddToDoActivity extends AppCompatActivity {
     private void addTarea(){
         if (validarCampos()) {
             if (todo == null) {
-                ToDo tarea = new ToDo(this.txTitulo.getText().toString(),
+                ToDo tarea = new ToDo(user.getUid(), this.txTitulo.getText().toString(),
                         this.txDescripcion.getText().toString(),
                         LocalDate.parse(this.txFechaLimite.getText().toString(), formatter),
                         priorityMap.get(spPrioridad.getSelectedItem().toString()),

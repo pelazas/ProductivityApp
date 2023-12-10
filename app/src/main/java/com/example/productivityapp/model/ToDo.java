@@ -4,15 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
-@Entity(tableName = "todos")
 public class ToDo implements Parcelable {
 
     public enum Priority {
@@ -23,19 +18,17 @@ public class ToDo implements Parcelable {
         TO_DO, CANCEL, FINISHED
     }
 
-    @PrimaryKey(autoGenerate = true) private int id;
-    @ColumnInfo(name="title") private String title;
-    @ColumnInfo(name="description") private String description;
-    @ColumnInfo(name="limit_date") private LocalDate limitDate;
-    @ColumnInfo(name="priority") private Priority priority;
-    @ColumnInfo(name="state") private State state;
+    private String id;
+    private String userId;
+    private String title;
+    private String description;
+    private LocalDate limitDate;
+    private Priority priority;
+    private State state;
 
-    @Ignore
-    public ToDo(String title, LocalDate limitDate, Priority priority) {
-        this(title, "", limitDate, priority, State.TO_DO);
-    }
-
-    public ToDo(String title, String description, LocalDate limitDate, Priority priority, State state) {
+    public ToDo(String id, String userId, String title, String description, LocalDate limitDate, Priority priority, State state) {
+        this.id = id;
+        this.userId = userId;
         this.title = title;
         this.description = description;
         this.limitDate = limitDate;
@@ -43,8 +36,17 @@ public class ToDo implements Parcelable {
         this.state = state;
     }
 
+    public ToDo(String userId, String title, LocalDate limitDate, Priority priority) {
+        this(null, userId, title, "", limitDate, priority, State.TO_DO);
+    }
+
+    public ToDo(String userId, String title, String description, LocalDate limitDate, Priority priority, State state) {
+        this(null, userId, title, description, limitDate, priority, state);
+    }
+
     protected ToDo(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readString();
+        this.userId = in.readString();
         this.title = in.readString();
         this.description = in.readString();
         this.limitDate = LocalDate.parse(in.readString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -52,11 +54,15 @@ public class ToDo implements Parcelable {
         this.state = State.valueOf(in.readString());
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -103,7 +109,8 @@ public class ToDo implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(id);
+        dest.writeString(userId);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(limitDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));

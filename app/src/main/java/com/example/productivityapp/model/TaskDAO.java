@@ -9,27 +9,19 @@ import androidx.room.Update;
 
 import java.util.List;
 
-@Dao
 public interface TaskDAO {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void add(ToDo tarea);
 
-    @Update
     void update(ToDo tarea);
 
-    @Delete
     void delete(ToDo tarea);
 
-    @Query("select * from todos")
-    List<ToDo> getAll();
+    List<ToDo> getAll(String userId);
 
-    @Query("select * from todos where state like :state")
-    List<ToDo> getAllActive(String state);
+    List<ToDo> getAllActive(String userId, String state);
 
-    @Query("select * from todos where state like 'FINISHED'")
-    List<ToDo> getAllFinished();
+    List<ToDo> getAllFinished(String userId);
 
-    @Query("update todos set state= :state where id= :tareaId")
-    void updateFromRemove(int tareaId, String state);
+    void updateFromRemove(String tareaId, String state);
 }
 
