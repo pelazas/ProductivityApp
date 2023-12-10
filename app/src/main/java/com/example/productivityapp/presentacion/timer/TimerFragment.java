@@ -35,6 +35,7 @@ import androidx.preference.PreferenceManager;
 import com.example.productivityapp.R;
 import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.ToDo;
+import com.example.productivityapp.model.UserTimesManager;
 import com.example.productivityapp.utils.Formatter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,6 +66,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
     private int timeElapsed;
 
     private List<ToDo> todos;
+    UserTimesManager manager = new UserTimesManager();
 
     public TimerFragment() {
         // Required empty public constructor
@@ -107,6 +109,12 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         crearCanalNotificacion();
         timerButton.setOnClickListener(v -> {
             if (isTimerRunning) {
+                // TODO: meter el tiempo y el email en UserTimesManager
+                String email = user.getEmail();
+                Log.d("duration", String.valueOf(timerDuration - timeElapsed));
+                int seconds = timerDuration - timeElapsed;
+                manager.updateTimeForEmail(email, seconds);
+
                 timer.cancel();
                 isTimerRunning = false;
                 timerButton.setText(R.string.iniciarTextoBoton);
