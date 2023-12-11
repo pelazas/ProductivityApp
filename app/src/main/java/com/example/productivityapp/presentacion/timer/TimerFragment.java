@@ -109,11 +109,10 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         crearCanalNotificacion();
         timerButton.setOnClickListener(v -> {
             if (isTimerRunning) {
-                // TODO: meter el tiempo y el email en UserTimesManager
-                String email = user.getEmail();
-                Log.d("duration", String.valueOf(timerDuration - timeElapsed));
-                int seconds = timerDuration - timeElapsed;
-                manager.updateTimeForEmail(email, seconds);
+                if (!modoSwitch.isChecked()) {
+                    String email = user.getEmail();
+                    actualizarDBTiempo(email);
+                }
 
                 timer.cancel();
                 isTimerRunning = false;
@@ -139,6 +138,11 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
                 switchStudyMode();
             }
         });
+    }
+
+    private void actualizarDBTiempo(String email) {
+        int seconds = timerDuration - timeElapsed;
+        manager.updateTimeForEmail(email, seconds);
     }
 
     private ProgressBar initializeProgressBar(int studyTime) {
@@ -190,11 +194,6 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
             alarmManager.set(AlarmManager.RTC_WAKEUP, futureInMillis, pendingIntent);
         }
 
-
-
-
-
-
         /*
         Intent intent = new Intent(requireContext(), NotificacionProgramada.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -239,7 +238,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
 
         ArrayList<ToDo> asignaturas = new ArrayList<>();
 
-        todos = AppDatabase.getDatabase().getTaskDAO().getAll(user.getUid());
+        todos = AppDatabase.getDatabase().getTaskDAO().getAllActive(user.getUid(), "TO_DO");
 
         for(int i = 0; i<todos.size();i++){
             if(!todos.get(i).getState().equals(ToDo.State.CANCEL))
@@ -274,6 +273,11 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
                 timerText.setText("00:00");
                 isTimerRunning = false;
                 timerButton.setText(R.string.iniciarTextoBoton);
+
+                if (!modoSwitch.isChecked()) {
+                    String email = user.getEmail();
+                    actualizarDBTiempo(email);
+                }
             }
         }.start();
     }

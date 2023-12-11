@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -99,7 +100,7 @@ public class UserTimesManager {
 
         public void run() {
             try {
-                Task<QuerySnapshot> task = db.collection(COLLECTION_NAME)
+                Task<QuerySnapshot> task = db.collection(COLLECTION_NAME).orderBy("seconds", Query.Direction.DESCENDING).limit(5)
                         .get();
                 QuerySnapshot result = Tasks.await(task);
 
