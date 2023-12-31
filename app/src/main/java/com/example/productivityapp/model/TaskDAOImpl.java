@@ -9,7 +9,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDate;
+import org.threeten.bp.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

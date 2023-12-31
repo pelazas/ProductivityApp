@@ -40,7 +40,8 @@ import com.example.productivityapp.utils.Formatter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.time.Duration;
+import org.threeten.bp.Duration;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
