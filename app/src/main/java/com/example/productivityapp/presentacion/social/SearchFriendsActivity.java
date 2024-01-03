@@ -1,0 +1,66 @@
+package com.example.productivityapp.presentacion.social;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import com.example.productivityapp.FragmentManager;
+import com.example.productivityapp.R;
+import com.example.productivityapp.presentacion.settings.SettingsFragment;
+import com.example.productivityapp.presentacion.social.requests.RequestsFragment;
+import com.example.productivityapp.presentacion.social.searchFriends.SearchFriendsFragment;
+import com.example.productivityapp.presentacion.timer.TimerFragment;
+import com.example.productivityapp.presentacion.toDo.ToDoFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+public class SearchFriendsActivity extends AppCompatActivity {
+
+    private BottomNavigationView navView;
+    private FragmentManager fragmentManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search_friends);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Buscar amigos");
+        }
+
+        navView = findViewById(R.id.bottom_nav_view);
+        fragmentManager = new FragmentManager(this);
+
+        if (savedInstanceState == null) {
+            // Set the default fragment
+            fragmentManager.replaceFragment(new TimerFragment(), false);
+        }
+
+        navView.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.nav_solicitudes) {
+            fragmentManager.replaceFragment(new RequestsFragment(), false);
+            return true;
+        } else if (itemId == R.id.nav_buscar) {
+            fragmentManager.replaceFragment(new SearchFriendsFragment(),false);
+            return true;
+        } else {
+            throw new IllegalStateException("Unexpected value: " + item.getItemId());
+        }
+    };
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        // Manejar evento de clic en la flecha de hacia atrás
+        onBackPressed();
+        return true;
+    }
+
+}

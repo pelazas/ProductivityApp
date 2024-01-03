@@ -35,12 +35,13 @@
         <activity
             android:name=".presentacion.MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".presentacion.social.SearchFriendsActivity"
+            android:exported="false" />
 
         <receiver
             android:name=".presentacion.timer.NotificacionProgramada"
-            android:exported="false">
-        </receiver>
-
+            android:exported="false" />
     </application>
 
 </manifest>
