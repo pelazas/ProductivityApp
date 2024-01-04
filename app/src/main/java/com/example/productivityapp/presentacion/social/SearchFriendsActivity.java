@@ -35,7 +35,7 @@ public class SearchFriendsActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             // Set the default fragment
-            fragmentManager.replaceFragment(new TimerFragment(), false);
+            fragmentManager.replaceFragment(new RequestsFragment(), false);
         }
 
         navView.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -58,7 +58,6 @@ public class SearchFriendsActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        // Manejar evento de clic en la flecha de hacia atrás
         onBackPressed();
         return true;
     }

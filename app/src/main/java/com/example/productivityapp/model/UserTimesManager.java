@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -92,6 +93,57 @@ public class UserTimesManager {
         return t.getEmailsAndTimes();
     }
 
+    public List<TimeData> getEmailAndTimesOfFriends(List<String> friends) {
+        ThreadGetEmailsAndTimesOfFriends t = new ThreadGetEmailsAndTimesOfFriends(friends);
+        t.start();
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return t.getEmailsAndTimes();
+    }
+
+    private class ThreadGetEmailsAndTimesOfFriends extends Thread {
+        private List<TimeData> times;
+        private List<String> friends;
+
+        public ThreadGetEmailsAndTimesOfFriends(List<String> friends) {
+            this.friends = friends;
+        }
+
+        public void run() {
+            try {
+                Task<QuerySnapshot> task = db.collection(COLLECTION_NAME)
+                        .whereIn("email", friends)
+                        .orderBy("seconds", Query.Direction.DESCENDING).limit(5)
+                        .get();
+                QuerySnapshot result = Tasks.await(task);
+
+                if (result != null && !result.isEmpty()) {
+                    List<TimeData> times = new ArrayList<>();
+
+                    for (DocumentSnapshot document : result.getDocuments()) {
+                        times.add(assembleTodo(document));
+                    }
+
+                    this.times = times;
+                } else {
+                    this.times = new ArrayList<>();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                this.times = new ArrayList<>();
+            }
+        }
+
+        public List<TimeData> getEmailsAndTimes() {
+            return this.times;
+        }
+    }
+
     private class ThreadGetAllEmailsAndTimes extends Thread {
         private List<TimeData> times;
 
@@ -124,6 +176,7 @@ public class UserTimesManager {
             return this.times;
         }
     }
+
     private TimeData assembleTodo(DocumentSnapshot document) {
         String email = document.getId();
         long seconds = (Long) document.get("seconds");

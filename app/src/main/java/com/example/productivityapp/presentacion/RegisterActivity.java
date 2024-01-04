@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.productivityapp.R;
+import com.example.productivityapp.model.AppDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -88,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this, "Cuenta creada con éxito.",
                                     Toast.LENGTH_SHORT).show();
+                            AppDatabase.getDatabase().getUserDAO().registerUser(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail());
                             Intent intent = new Intent(this, MainActivity.class);
                             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                             finish();

@@ -114,6 +114,8 @@ public class UserDAOImpl implements UserDAO {
                     for (DocumentSnapshot document : result.getDocuments()) {
                         this.user = assembleUser(document);
                     }
+                } else {
+                    this.user = new User("NULL", "NULL", new ArrayList<>(), new ArrayList<>());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

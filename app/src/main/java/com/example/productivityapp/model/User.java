@@ -13,8 +13,8 @@ public class User {
     public User(String userId, String email, List<String> friends, List<String> friendRequests) {
         this.userId = userId;
         this.email = email;
-        this.friends = friends;
-        this.friendRequests = friendRequests;
+        this.friends = new ArrayList<>(friends);
+        this.friendRequests = new ArrayList<>(friendRequests);
     }
 
     public String getUserId() {

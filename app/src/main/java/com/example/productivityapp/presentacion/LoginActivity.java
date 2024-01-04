@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.productivityapp.R;
+import com.example.productivityapp.model.AppDatabase;
+import com.example.productivityapp.model.UserDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -112,6 +114,12 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Has iniciado sesión con éxito.",
                                     Toast.LENGTH_SHORT).show();
+                            UserDAO userDao = AppDatabase.getDatabase().getUserDAO();
+
+                            // No data of user in DB
+                            if (userDao.getUser(mAuth.getUid()).getEmail().equals("NULL")) {
+                                userDao.registerUser(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail());
+                            }
 
                             Intent intent = new Intent(this, MainActivity.class);
                             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
@@ -121,7 +129,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
-
         });
     }
 }

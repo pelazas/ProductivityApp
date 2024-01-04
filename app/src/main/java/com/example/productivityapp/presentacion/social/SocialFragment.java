@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.productivityapp.R;
@@ -19,8 +20,10 @@ import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.TimeData;
 import com.example.productivityapp.model.TimeDataFormatted;
 import com.example.productivityapp.model.ToDo;
+import com.example.productivityapp.model.User;
 import com.example.productivityapp.model.UserTimesManager;
 import com.example.productivityapp.presentacion.LoginActivity;
+import com.example.productivityapp.presentacion.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -33,6 +36,8 @@ public class SocialFragment extends Fragment {
     private TextView txNoAcabadas;
     private FirebaseAuth mAuth;
     private TextView txtUsername;
+    private TextView txtUserEmail;
+    private ImageButton btAddFriends;
     private Button logoutButton;
     private FirebaseUser user;
     private RecyclerView recyclerView;
@@ -53,17 +58,20 @@ public class SocialFragment extends Fragment {
         timeTableAdapter = new TimeTableAdapter(timeDataList);
         recyclerView.setAdapter(timeTableAdapter);
 
-        // Retrieve data from Firebase and update the RecyclerView
-        fetchDataFromFirebase();
-
         appDatabase = AppDatabase.getDatabase();
         txAcabadas = root.findViewById(R.id.txNumTareasAcabadas);
         txNoAcabadas = root.findViewById(R.id.txNumTareasNoAcabadas);
         logoutButton = root.findViewById(R.id.logout);
+        txtUserEmail = root.findViewById(R.id.txtUserEmail);
+        btAddFriends = root.findViewById(R.id.btAddFriends);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        txtUserEmail.setText(user.getEmail());
 
+        // Retrieve data from Firebase and update the RecyclerView
+        fetchDataFromFirebase();
 
+        btAddFriends.setOnClickListener(v -> openFriendsActivity());
         logoutButton.setOnClickListener(v -> cerrarSesion());
 
         cargarValores();
@@ -71,11 +79,18 @@ public class SocialFragment extends Fragment {
         return root;
     }
 
+    private void openFriendsActivity() {
+        Intent intent = new Intent(this.getActivity(), SearchFriendsActivity.class);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this.getActivity()).toBundle());
+    }
 
     private void fetchDataFromFirebase() {
         // Instantiate UserTimesManager
         UserTimesManager manager = new UserTimesManager();
-        List<TimeData> data = manager.getAllEmailsAndTimes();
+        User userDb = AppDatabase.getDatabase().getUserDAO().getUser(user.getUid());
+        List<String> friends = userDb.getFriends();
+        friends.add(userDb.getEmail());
+        List<TimeData> data = manager.getEmailAndTimesOfFriends(friends);
         timeDataList.clear();
         for (TimeData time: data) {
             String formattedSeconds = formatSecondsToHHmmss(time.getSeconds());
