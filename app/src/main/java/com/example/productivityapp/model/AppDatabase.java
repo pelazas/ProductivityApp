@@ -1,15 +1,9 @@
 package com.example.productivityapp.model;
 
-import android.content.Context;
-
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
-
 public class AppDatabase {
 
     private TaskDAO taskDao = new TaskDAOImpl();
+    private UserDAO userDao = new UserDAOImpl();
     private static AppDatabase db;
 
     public static AppDatabase getDatabase() {
@@ -24,4 +18,7 @@ public class AppDatabase {
         return taskDao;
     }
 
+    public UserDAO getUserDAO() {
+        return userDao;
+    }
 }
