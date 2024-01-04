@@ -13,12 +13,10 @@
         android:backgroundTint="#673AB7"
         android:contentDescription="NULL"
         android:src="@drawable/search_id_friend"
-        app:layout_constraintBottom_toTopOf="@+id/search_friends_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toEndOf="@+id/editTxNewFriend"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.876" />
+        app:layout_constraintTop_toTopOf="@+id/editTxNewFriend" />
 
     <TextView
         android:id="@+id/txTitulo"
@@ -43,21 +41,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.652"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txTitulo"
-        app:layout_constraintVertical_bias="0.786" />
+        app:layout_constraintTop_toBottomOf="@+id/editTxNewFriend" />
 
     <EditText
         android:id="@+id/editTxNewFriend"
         android:layout_width="300dp"
         android:layout_height="50dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Email"
         android:inputType="text"
-        android:text="Name"
-        app:layout_constraintBottom_toTopOf="@+id/search_friends_recyclerview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.252"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txTitulo"
-        app:layout_constraintVertical_bias="0.304" />
+        app:layout_constraintTop_toBottomOf="@+id/txTitulo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
