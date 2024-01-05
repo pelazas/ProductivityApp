@@ -2,6 +2,8 @@ package com.example.productivityapp.model;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -94,6 +97,21 @@ public class UserDAOImpl implements UserDAO {
         return t.getUser();
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+
+        ThreadGetUserByEmail t = new ThreadGetUserByEmail(email);
+        t.start();
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return t.getUser();
+    }
+
     private class ThreadGetUser extends Thread {
 
         private String uuid;
@@ -126,6 +144,83 @@ public class UserDAOImpl implements UserDAO {
             return this.user;
         }
     }
+
+    private class ThreadGetUserByEmail extends Thread {
+
+        private String email;
+        private User user;
+        private User userMe;
+        private FirebaseAuth mAuth;
+        private FirebaseUser fUser;
+
+        public ThreadGetUserByEmail(String email) {
+            this.email = email;
+        }
+
+        public void run() {
+            mAuth = FirebaseAuth.getInstance();
+            fUser = mAuth.getCurrentUser();
+            try {
+                Task<QuerySnapshot> task = db.collection("users")
+                        .whereEqualTo("email", this.email)
+                        .get();
+                QuerySnapshot result = Tasks.await(task);
+
+
+                if (result != null && !result.isEmpty()) {
+                    for (DocumentSnapshot document : result.getDocuments()) {
+                        this.user = assembleUser(document);
+                    }
+
+                } else {
+                    this.user = new User("NULL", "NULL", new ArrayList<>(), new ArrayList<>());
+                }
+
+                if (this.user.getEmail().equals(fUser.getEmail())) {
+                    // es la misma persona
+                    this.user = new User("ITSELF", "NULL", new ArrayList<>(), new ArrayList<>());
+                }
+
+                User myself = getMe();
+                for (String friend : myself.getFriends()) {
+                    if (friend.equals(this.user.getEmail())) {
+                        this.user = new User("FRIEND", "NULL", new ArrayList<>(), new ArrayList<>());
+                    }
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public User getUser() {
+            return this.user;
+        }
+    }
+
+    private User getMe() throws ExecutionException, InterruptedException {
+        User user = null;
+        FirebaseAuth mAuth;
+        FirebaseUser fUser;
+
+        mAuth = FirebaseAuth.getInstance();
+        fUser = mAuth.getCurrentUser();
+        Task<QuerySnapshot> task2 = db.collection("users")
+                .whereEqualTo("email", fUser.getEmail())
+                .get();
+        QuerySnapshot result2 = Tasks.await(task2);
+
+
+        if (result2 != null && !result2.isEmpty()) {
+            for (DocumentSnapshot document : result2.getDocuments()) {
+                user = assembleUser(document);
+            }
+
+        }
+        return user;
+    }
+
 
 
     private User assembleUser(DocumentSnapshot document) {
