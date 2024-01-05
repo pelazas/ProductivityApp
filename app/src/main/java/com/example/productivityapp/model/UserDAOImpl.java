@@ -64,6 +64,7 @@ public class UserDAOImpl implements UserDAO {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             List<String> friends = (List<String>) document.get("friends");
                             List<String> friendRequests = (List<String>) document.get("friendRequests");
+                            String friendReceiveEmail = (String) document.get("email");
 
                             if (friendRequests != null && friends != null) {
                                 friendRequests.remove(friendAcceptedEmail);
@@ -77,6 +78,23 @@ public class UserDAOImpl implements UserDAO {
                                 db.collection("users")
                                         .document(document.getId())
                                         .update(d);
+
+                                db.collection("users")
+                                        .whereEqualTo("email", friendAcceptedEmail)
+                                        .get()
+                                        .addOnCompleteListener(t -> {
+                                            if (t.isSuccessful()) {
+                                                for (QueryDocumentSnapshot qds : task.getResult()) {
+                                                    List<String> friendsOther = (List<String>) qds.get("friends");
+
+                                                    friendsOther.add(friendReceiveEmail);
+
+                                                    db.collection("users")
+                                                            .document(qds.getId())
+                                                            .update("friends", friendsOther);
+                                                }
+                                            }
+                                        });
                             }
                         }
                     }
