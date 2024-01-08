@@ -1,9 +1,9 @@
 package com.example.productivityapp.presentacion.social;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.productivityapp.FragmentManager;
 import com.example.productivityapp.R;
@@ -24,11 +24,12 @@ public class SearchFriendsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_friends);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Buscar amigos");
-        }
+        // Configura el Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Habilita la flecha hacia atrás
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         navView = findViewById(R.id.bottom_nav_view);
         fragmentManager = new FragmentManager(this);
