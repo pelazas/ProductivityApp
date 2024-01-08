@@ -34,19 +34,14 @@ public class SearchFriendsFragment extends Fragment {
     public SearchFriendsFragment() { }
 
     private ImageButton searchBtn;
-    private RecyclerView recyclerView;
-    private UserItemAdapter userAdapter;
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_search_friends, container, false);
 
-        // Find the ImageButton and EditText by their IDs
         searchBtn = root.findViewById(R.id.imageButton);
         EditText editTxNewFriend = root.findViewById(R.id.editTxNewFriend);
 
@@ -135,6 +130,7 @@ public class SearchFriendsFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void showUserAlreadyFriendDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Error en la busqueda");
