@@ -1,68 +1,81 @@
 package com.example.productivityapp.presentacion.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.productivityapp.R; // Make sure to replace this with the actual package name
-import com.example.productivityapp.model.User;
+import com.example.productivityapp.R;
+import com.example.productivityapp.model.AppDatabase;
+
 
 import java.util.List;
 
 public class UserItemAdapter extends RecyclerView.Adapter<UserItemAdapter.UserItemViewHolder> {
 
-    private List<User> userList;
+    private List<String> emails;
+    private String uuid;
+    private Context context;
 
-    public UserItemAdapter(List<User> userList) {
-        this.userList = userList;
+    public UserItemAdapter(Context context, List<String> emails, String uuid) {
+        this.emails = emails;
+        this.uuid = uuid;
+        this.context = context;
     }
 
     public static class UserItemViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewUser;
-        TextView textViewUserId;
-        Button buttonAceptar;
+        private TextView tvUserEmail;
+        private Button btnAccept;
+        private Button btnReject;
 
         public UserItemViewHolder(View itemView) {
             super(itemView);
-            textViewUser = itemView.findViewById(R.id.textViewUser);
-            textViewUserId = itemView.findViewById(R.id.textViewUserId);
-            buttonAceptar = itemView.findViewById(R.id.buttonAceptar);
+            tvUserEmail = itemView.findViewById(R.id.textViewUserId);
+            btnAccept = itemView.findViewById(R.id.buttonAceptar);
+            btnReject = itemView.findViewById(R.id.buttonRechazar);
         }
     }
 
     @NonNull
     @Override
     public UserItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_friends_search, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_request, parent, false);
         return new UserItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UserItemViewHolder holder, int position) {
-        User user = userList.get(position);
+        String email = emails.get(position);
 
-        // Set data to views
-        holder.textViewUser.setText("Usuario: " + user.getEmail()); // Replace with the actual method to get user name
-        holder.textViewUserId.setText(user.getUserId()); // Replace with the actual method to get user ID
+        holder.tvUserEmail.setText(email);
 
-        // Set click listener for the "Aceptar" button
-        holder.buttonAceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Handle the button click event as needed
-                // You can access the user associated with this item using userList.get(position)
-                // For example, userList.get(position).getUserId()
-            }
+        holder.btnAccept.setOnClickListener(view -> {
+            AppDatabase.getDatabase().getUserDAO().acceptFriendRequest(uuid, email);
+            Toast.makeText(context, String.format("Ahora tú y %s sois amigos", email), Toast.LENGTH_SHORT).show();
+            deleteItem(position);
         });
+
+        holder.btnReject.setOnClickListener(view -> {
+            AppDatabase.getDatabase().getUserDAO().rejectFriendRequest(uuid, email);
+            Toast.makeText(context, String.format("La petición de %s ha sido rechazada", email), Toast.LENGTH_SHORT).show();
+            deleteItem(position);
+        });
+    }
+
+    private void deleteItem(int position) {
+        emails.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, emails.size());
     }
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return emails.size();
     }
 }

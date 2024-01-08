@@ -79,6 +79,13 @@ public class SocialFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        fetchDataFromFirebase();
+    }
+
     private void openFriendsActivity() {
         Intent intent = new Intent(this.getActivity(), SearchFriendsActivity.class);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this.getActivity()).toBundle());

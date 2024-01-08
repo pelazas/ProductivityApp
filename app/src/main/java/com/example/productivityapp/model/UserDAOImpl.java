@@ -1,5 +1,6 @@
 package com.example.productivityapp.model;
 
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,7 +85,7 @@ public class UserDAOImpl implements UserDAO {
                                         .get()
                                         .addOnCompleteListener(t -> {
                                             if (t.isSuccessful()) {
-                                                for (QueryDocumentSnapshot qds : task.getResult()) {
+                                                for (QueryDocumentSnapshot qds : t.getResult()) {
                                                     List<String> friendsOther = (List<String>) qds.get("friends");
 
                                                     friendsOther.add(friendReceiveEmail);
@@ -95,6 +96,28 @@ public class UserDAOImpl implements UserDAO {
                                                 }
                                             }
                                         });
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void rejectFriendRequest(String uuid, String friendRejectedEmail) {
+        db.collection("users")
+                .whereEqualTo("userId", uuid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            List<String> friendRequests = (List<String>) document.get("friendRequests");
+
+                            if (friendRequests != null) {
+                                friendRequests.remove(friendRejectedEmail);
+
+                                db.collection("users")
+                                        .document(document.getId())
+                                        .update("friendRequests", friendRequests);
                             }
                         }
                     }

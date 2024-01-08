@@ -70,6 +70,8 @@ public class SearchFriendsFragment extends Fragment {
                     showUserAlreadyFriendDialog();
                 } else if (currentUser.getFriendRequests().contains(foundUser.getEmail())) {
                     showFoundUserAlreadySentRequestDialog();
+                } else if (foundUser.getFriendRequests().contains(currentUser.getEmail())) {
+                    showCurrentUserAlreadySentRequestDialog();
                 } else {
                     showUserFoundDialog(foundUser);
                 }
@@ -152,6 +154,21 @@ public class SearchFriendsFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Error en la busqueda");
         builder.setMessage("¡El usuario al que has intentado mandar una petición ya te ha mandado una petición previamente!");
+        builder.setNegativeButton("Atrás", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showCurrentUserAlreadySentRequestDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Error en la busqueda");
+        builder.setMessage("¡Ya has mandado una petición a ese usuario previamente!");
         builder.setNegativeButton("Atrás", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
