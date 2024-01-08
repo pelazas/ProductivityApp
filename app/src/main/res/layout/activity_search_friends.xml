@@ -28,8 +28,9 @@
 
     <FrameLayout
         android:id="@+id/fragment_container"
-        android:layout_width="405dp"
-        android:layout_height="597dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="64dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
