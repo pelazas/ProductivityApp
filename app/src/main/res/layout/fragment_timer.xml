@@ -15,27 +15,27 @@
             android:id="@+id/spAsignaturas"
             android:layout_width="330dp"
             android:layout_height="50dp"
+            android:layout_marginTop="4dp"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.493"
-            android:layout_marginTop="32dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Switch
             android:id="@+id/modo_switch"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
+            android:layout_width="282dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/modo_descanso"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@id/circularProgressBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spAsignaturas"
-            app:layout_constraintBottom_toTopOf="@id/circularProgressBar"/>
+            app:layout_constraintTop_toBottomOf="@+id/spAsignaturas" />
 
         <ProgressBar
             android:id="@+id/circularProgressBar"
