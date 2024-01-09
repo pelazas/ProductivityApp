@@ -24,7 +24,7 @@
                 android:id="@+id/textViewUser"
                 android:layout_width="77dp"
                 android:layout_height="29dp"
-                android:text="Usuario: "
+                android:text="@string/usuarioSolicitud"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/buttonBar"
@@ -42,7 +42,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewUser"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 tools:text="Email" />
 
             <LinearLayout
@@ -64,8 +64,9 @@
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="@android:color/holo_green_light"
-                    android:text="Aceptar"
-                    android:textSize="18sp" />
+                    android:text="@string/aceptarSolicitud"
+                    android:textSize="18sp"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
                     android:id="@+id/buttonRechazar"
@@ -74,9 +75,13 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="@android:color/holo_red_light"
-                    android:text="Rechazar"
-                    android:textSize="18sp" />
+                    android:text="@string/rechazarSolicitud"
+                    android:textSize="18sp"
+                    style="?android:attr/buttonBarButtonStyle" />
             </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

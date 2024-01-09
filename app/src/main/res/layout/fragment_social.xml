@@ -7,16 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".presentacion.social.SocialFragment">
 
-    <!-- Title -->
-
-    <!-- RecyclerView -->
-
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="136dp"
-        android:text="Ranking Estudio"
+        android:text="@string/rankingEstudio"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +36,7 @@
         android:id="@+id/txResumenTareas"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:text="Resumen de tareas"
+        android:text="@string/resumenTareas"
         android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +61,7 @@
             android:layout_height="42dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Tareas acabadas"
+            android:text="@string/tareasAcabadas"
             android:textSize="16sp" />
 
         <!-- Label for "Tareas no acabadas" -->
@@ -75,9 +71,10 @@
             android:layout_height="42dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Tareas no acabadas"
+            android:text="@string/tareasNoAcabadas"
             android:textSize="16sp" />
     </LinearLayout>
+
     <!-- Numbers for "Tareas acabadas" and "Tareas no acabadas" -->
     <LinearLayout
         android:id="@+id/layoutNumbers"
@@ -95,7 +92,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="10"
             android:textSize="18sp" />
 
         <!-- Number for "Tareas no acabadas" -->
@@ -105,12 +101,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="5"
             android:textSize="18sp" />
     </LinearLayout>
 
     <!-- Button at the bottom -->
-
     <Button
         android:id="@+id/logout"
         android:layout_width="match_parent"
@@ -118,7 +112,7 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="10dp"
-        android:text="Cerrar sesión"
+        android:text="@string/cerrarSesion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,8 +124,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:layout_marginLeft="32dp"
-        android:text="Usuario"
+        android:layout_marginStart="32dp"
+        android:text="@string/usuario"
         android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -142,8 +136,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="32dp"
-        android:text="idUsuario"
+        android:layout_marginStart="32dp"
+        android:text="@string/idUsuario"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txUsuario" />
@@ -155,7 +149,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#673AB7"
-        android:contentDescription="NULL"
+        android:contentDescription="@string/descpImgBt"
         android:src="@drawable/addfriends"
         app:layout_constraintBottom_toTopOf="@+id/titleTextView"
         app:layout_constraintEnd_toEndOf="parent"

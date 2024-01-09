@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="32dp"
-        android:text="Tarea nueva"
+        android:text="@string/newTarea"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,12 +25,13 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="Título de la tarea"
+        android:hint="@string/tituloTarea"
         android:inputType="text"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/txTareaNueva"
-        app:layout_constraintTop_toBottomOf="@+id/txTareaNueva" />
+        app:layout_constraintTop_toBottomOf="@+id/txTareaNueva"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editTxDescripcion"
@@ -39,19 +40,20 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="Descripción de la tarea"
+        android:hint="@string/descripTarea"
         android:inputType="text"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/txTareaNueva"
-        app:layout_constraintTop_toBottomOf="@+id/editTxTitulo" />
+        app:layout_constraintTop_toBottomOf="@+id/editTxTitulo"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/txFecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Fecha limite"
+        android:text="@string/fechaLimiteTarea"
         android:textSize="23sp"
         app:layout_constraintStart_toStartOf="@+id/txTareaNueva"
         app:layout_constraintTop_toBottomOf="@+id/editTxDescripcion" />
@@ -63,19 +65,20 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Fecha"
+        android:hint="@string/fechaTarea"
         android:inputType="text"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/txTareaNueva"
-        app:layout_constraintTop_toBottomOf="@+id/txFecha" />
+        app:layout_constraintTop_toBottomOf="@+id/txFecha"
+        android:importantForAutofill="no"/>
 
     <TextView
         android:id="@+id/txPrioridad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Prioridad"
+        android:text="@string/prioridadTarea"
         android:textSize="23sp"
         app:layout_constraintStart_toStartOf="@+id/txTareaNueva"
         app:layout_constraintTop_toBottomOf="@+id/editTxFecha" />
@@ -106,7 +109,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="40dp"
-        android:text="Borrar"
+        android:text="@string/deleteTarea"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline"
@@ -119,7 +122,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="40dp"
-        android:text="Guardar"
+        android:text="@string/addTarea"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
