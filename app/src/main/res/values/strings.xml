@@ -36,7 +36,7 @@
     <string name="passw">Contraseña</string>
     <string name="tuPassw">tu contraeña</string>
     <string name="solicitudes">Solicitudes</string>
-    <string name="noSolicitudes">No hay solicitudes de amistad.</string>
+    <string name="noSolicitudes">No hay solicitudes de amistad</string>
     <string name="buscador">Buscador</string>
     <string name="descpImgBt">Buscar amigos en la app</string>
     <string name="rankingEstudio">Ranking Estudio</string>
@@ -54,4 +54,8 @@
     <string name="rechazarSolicitud">Rechazar</string>
     <string name="fechaLimiteDescTarea">Fecha límite:</string>
     <string name="prioridadDescTarea">Prioridad:</string>
+    <string name="pomodoro">Pomodoro</string>
+    <string name="social">Social</string>
+    <string name="configuracion">Configuración</string>
+    <string name="buscar_amigos">Buscar amigos</string>
 </resources>

@@ -113,8 +113,8 @@ public class TaskDAOImpl implements TaskDAO {
     class ThreadGetAllActive extends Thread {
 
         private List<ToDo> todos;
-        private String state;
-        private String userId;
+        private final String state;
+        private final String userId;
 
         public ThreadGetAllActive(String userId, String state) {
             this.state = state;
@@ -155,7 +155,7 @@ public class TaskDAOImpl implements TaskDAO {
     class ThreadGetAllFinished extends Thread {
 
         private List<ToDo> todos;
-        private String userId;
+        private final String userId;
 
         public ThreadGetAllFinished(String userId) {
             this.userId = userId;
@@ -195,7 +195,7 @@ public class TaskDAOImpl implements TaskDAO {
     class ThreadGetAllTodos extends Thread {
 
         private List<ToDo> todos;
-        private String userId;
+        private final String userId;
 
         public ThreadGetAllTodos(String userId) {
             this.userId = userId;

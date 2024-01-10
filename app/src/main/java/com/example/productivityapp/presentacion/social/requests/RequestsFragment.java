@@ -34,9 +34,8 @@ public class RequestsFragment extends Fragment {
                              Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        View root = inflater.inflate(R.layout.fragment_requests, container, false);
 
-        return root;
+        return inflater.inflate(R.layout.fragment_requests, container, false);
     }
 
     @Override

@@ -2,8 +2,8 @@ package com.example.productivityapp.model;
 
 public class AppDatabase {
 
-    private TaskDAO taskDao = new TaskDAOImpl();
-    private UserDAO userDao = new UserDAOImpl();
+    private final TaskDAO taskDao = new TaskDAOImpl();
+    private final UserDAO userDao = new UserDAOImpl();
     private static AppDatabase db;
 
     public static AppDatabase getDatabase() {

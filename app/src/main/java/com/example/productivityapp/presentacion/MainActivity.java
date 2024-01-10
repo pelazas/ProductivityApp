@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         navView.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    private BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         int itemId = item.getItemId();
 

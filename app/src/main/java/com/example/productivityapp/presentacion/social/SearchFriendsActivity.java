@@ -7,12 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.productivityapp.FragmentManager;
 import com.example.productivityapp.R;
-import com.example.productivityapp.presentacion.settings.SettingsFragment;
 import com.example.productivityapp.presentacion.social.requests.RequestsFragment;
 import com.example.productivityapp.presentacion.social.searchFriends.SearchFriendsFragment;
-import com.example.productivityapp.presentacion.timer.TimerFragment;
-import com.example.productivityapp.presentacion.toDo.ToDoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 public class SearchFriendsActivity extends AppCompatActivity {
 
@@ -28,7 +27,7 @@ public class SearchFriendsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Habilita la flecha hacia atrás
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
         navView = findViewById(R.id.bottom_nav_view);
@@ -42,7 +41,7 @@ public class SearchFriendsActivity extends AppCompatActivity {
         navView.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    private BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         int itemId = item.getItemId();
 

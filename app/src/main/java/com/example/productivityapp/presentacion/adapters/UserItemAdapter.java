@@ -19,9 +19,9 @@ import java.util.List;
 
 public class UserItemAdapter extends RecyclerView.Adapter<UserItemAdapter.UserItemViewHolder> {
 
-    private List<String> emails;
-    private String uuid;
-    private Context context;
+    private final List<String> emails;
+    private final String uuid;
+    private final Context context;
 
     public UserItemAdapter(Context context, List<String> emails, String uuid) {
         this.emails = emails;
@@ -30,9 +30,9 @@ public class UserItemAdapter extends RecyclerView.Adapter<UserItemAdapter.UserIt
     }
 
     public static class UserItemViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvUserEmail;
-        private Button btnAccept;
-        private Button btnReject;
+        private final TextView tvUserEmail;
+        private final Button btnAccept;
+        private final Button btnReject;
 
         public UserItemViewHolder(View itemView) {
             super(itemView);

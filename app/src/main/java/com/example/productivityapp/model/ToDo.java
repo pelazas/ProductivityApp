@@ -6,7 +6,8 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
-import java.util.UUID;
+
+import java.util.Objects;
 
 public class ToDo implements Parcelable {
 
@@ -19,7 +20,7 @@ public class ToDo implements Parcelable {
     }
 
     private String id;
-    private String userId;
+    private final String userId;
     private String title;
     private String description;
     private LocalDate limitDate;
@@ -49,7 +50,8 @@ public class ToDo implements Parcelable {
         this.userId = in.readString();
         this.title = in.readString();
         this.description = in.readString();
-        this.limitDate = LocalDate.parse(in.readString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.limitDate = LocalDate.parse(Objects.requireNonNull(in.readString()),
+                DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.priority = Priority.valueOf(in.readString());
         this.state = State.valueOf(in.readString());
     }

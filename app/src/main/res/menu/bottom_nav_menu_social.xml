@@ -5,12 +5,12 @@
     <item
         android:id="@+id/nav_solicitudes"
         android:icon="@drawable/request"
-        android:title="Solicitudes" />
+        android:title="@string/solicitudes" />
 
     <item
         android:id="@+id/nav_buscar"
         android:icon="@drawable/search_friends"
-        android:title="Buscar amigos" />
+        android:title="@string/buscar_amigos" />
 
 
 </menu>

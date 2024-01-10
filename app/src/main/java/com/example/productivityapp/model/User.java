@@ -5,10 +5,10 @@ import java.util.List;
 
 public class User {
 
-    private String userId;
-    private String email;
-    private List<String> friends;
-    private List<String> friendRequests;
+    private final String userId;
+    private final String email;
+    private final List<String> friends;
+    private final List<String> friendRequests;
 
     public User(String userId, String email, List<String> friends, List<String> friendRequests) {
         this.userId = userId;

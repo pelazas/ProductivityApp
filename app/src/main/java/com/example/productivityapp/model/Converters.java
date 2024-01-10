@@ -5,7 +5,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 public class Converters {
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static ToDo.Priority fromPriorityString(String value) {
         return value == null ? null : ToDo.Priority.valueOf(value);

@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 public class FragmentManager {
-    private FragmentActivity activity;
+    private final FragmentActivity activity;
 
     public FragmentManager(FragmentActivity activity) {
         this.activity = activity;

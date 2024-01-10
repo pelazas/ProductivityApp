@@ -4,13 +4,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +16,6 @@ import android.widget.Toast;
 import com.example.productivityapp.R;
 import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.UserDAO;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -111,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         progressBar.setVisibility(View.GONE);
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && mAuth.getCurrentUser() != null) {
                             Toast.makeText(LoginActivity.this, "Has iniciado sesión con éxito.",
                                     Toast.LENGTH_SHORT).show();
                             UserDAO userDao = AppDatabase.getDatabase().getUserDAO();

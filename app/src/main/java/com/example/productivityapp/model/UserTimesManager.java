@@ -5,22 +5,18 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Time;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserTimesManager {
     private static final String TAG = "FirebaseManager";
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db;
     private static final String COLLECTION_NAME = "times";
     public UserTimesManager() {
         // Inicializar firebase
@@ -108,7 +104,7 @@ public class UserTimesManager {
 
     private class ThreadGetEmailsAndTimesOfFriends extends Thread {
         private List<TimeData> times;
-        private List<String> friends;
+        private final List<String> friends;
 
         public ThreadGetEmailsAndTimesOfFriends(List<String> friends) {
             this.friends = friends;

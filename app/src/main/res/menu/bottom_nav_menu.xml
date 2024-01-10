@@ -5,21 +5,21 @@
     <item
         android:id="@+id/nav_timer"
         android:icon="@drawable/baseline_timer_24"
-        android:title="Pomodoro" />
+        android:title="@string/pomodoro" />
 
     <item
         android:id="@+id/nav_toDo"
         android:icon="@drawable/baseline_checklist_24"
-        android:title="Tareas" />
+        android:title="@string/tareas" />
 
     <item
         android:id="@+id/nav_social"
         android:icon="@drawable/baseline_social_distance_24"
-        android:title="Social" />
+        android:title="@string/social" />
 
     <item
         android:id="@+id/nav_configuration"
         android:icon="@android:drawable/ic_menu_manage"
-        android:title="Configuración" />
+        android:title="@string/configuracion" />
 
 </menu>

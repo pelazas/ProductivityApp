@@ -1,8 +1,5 @@
 package com.example.productivityapp.presentacion.timer;
 
-import static android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM;
-
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -16,7 +13,6 @@ import android.graphics.drawable.RotateDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +39,6 @@ import com.google.firebase.auth.FirebaseUser;
 import org.threeten.bp.Duration;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class TimerFragment extends Fragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -69,9 +64,7 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
     private List<ToDo> todos;
     UserTimesManager manager = new UserTimesManager();
 
-    public TimerFragment() {
-        // Required empty public constructor
-    }
+    public TimerFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -195,24 +188,6 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
             alarmManager.set(AlarmManager.RTC_WAKEUP, futureInMillis, pendingIntent);
         }
 
-        /*
-        Intent intent = new Intent(requireContext(), NotificacionProgramada.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                requireContext(),
-                NotificacionProgramada.PROGRAMADA_NOTIFICATION_ID,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
-        );
-        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-        // API 31+ y permiso para alarmas exactas o API < 31
-        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms())
-                || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                    Calendar.getInstance().getTimeInMillis() + 5000, pendingIntent);
-        } else { // 31 y sin permiso. Solicitamos
-            requireContext().startActivity(new Intent("android.permission.SCHEDULE_EXACT_ALARM"));
-        }
-         */
     }
 
     private void switchBreakMode() {

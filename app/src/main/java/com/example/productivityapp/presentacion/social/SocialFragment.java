@@ -23,19 +23,18 @@ import com.example.productivityapp.model.ToDo;
 import com.example.productivityapp.model.User;
 import com.example.productivityapp.model.UserTimesManager;
 import com.example.productivityapp.presentacion.LoginActivity;
-import com.example.productivityapp.presentacion.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SocialFragment extends Fragment {
     private AppDatabase appDatabase;
     private TextView txAcabadas;
     private TextView txNoAcabadas;
     private FirebaseAuth mAuth;
-    private TextView txtUsername;
     private TextView txtUserEmail;
     private ImageButton btAddFriends;
     private Button logoutButton;
@@ -66,7 +65,7 @@ public class SocialFragment extends Fragment {
         btAddFriends = root.findViewById(R.id.btAddFriends);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        txtUserEmail.setText(user.getEmail());
+        txtUserEmail.setText(Objects.requireNonNull(user).getEmail());
 
         // Retrieve data from Firebase and update the RecyclerView
         fetchDataFromFirebase();

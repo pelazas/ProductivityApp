@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.productivityapp.R;
 import com.example.productivityapp.model.ToDo;
-import com.example.productivityapp.presentacion.toDo.ToDoFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import com.example.productivityapp.model.AppDatabase;
@@ -43,7 +42,7 @@ public class AddToDoActivity extends AppCompatActivity {
 
     private Map<String, ToDo.Priority> priorityMap;
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,9 +148,7 @@ public class AddToDoActivity extends AppCompatActivity {
         if (this.txDescripcion.getText().toString().isEmpty()) return false;
         if (this.txFechaLimite.getText().toString().isEmpty()) return false;
         if (!validarFecha(this.txFechaLimite.getText().toString())) return false;
-        if (!validarFechaTiempoValido( LocalDate.parse(this.txFechaLimite.getText().toString(), formatter))) return false;
-
-        return true;
+        return validarFechaTiempoValido(LocalDate.parse(this.txFechaLimite.getText().toString(), formatter));
     }
 
     private boolean validarFecha(String date) {

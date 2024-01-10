@@ -9,14 +9,13 @@ import com.example.productivityapp.R;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.productivityapp.model.TimeData;
 import com.example.productivityapp.model.TimeDataFormatted;
 
 import java.util.List;
 
 public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.ViewHolder> {
 
-    private List<TimeDataFormatted> timeDataList;
+    private final List<TimeDataFormatted> timeDataList;
 
     public TimeTableAdapter(List<TimeDataFormatted> timeDataList) {
         this.timeDataList = timeDataList;

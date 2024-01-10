@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         progressBar.setVisibility(View.GONE);
                         
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && mAuth.getCurrentUser() != null) {
                             Toast.makeText(RegisterActivity.this, "Cuenta creada con éxito.",
                                     Toast.LENGTH_SHORT).show();
                             AppDatabase.getDatabase().getUserDAO().registerUser(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail());

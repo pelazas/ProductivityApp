@@ -155,7 +155,7 @@ public class UserDAOImpl implements UserDAO {
 
     private class ThreadGetUser extends Thread {
 
-        private String uuid;
+        private final String uuid;
         private User user;
 
         public ThreadGetUser(String uuid) {
@@ -188,9 +188,9 @@ public class UserDAOImpl implements UserDAO {
 
     private class ThreadGetUserByEmail extends Thread {
 
-        private String email;
+        private final String email;
         private User user;
-        private User userMe;
+        //private User userMe;
         private FirebaseAuth mAuth;
         private FirebaseUser fUser;
 

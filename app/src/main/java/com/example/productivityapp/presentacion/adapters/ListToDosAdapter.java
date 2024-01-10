@@ -1,8 +1,6 @@
 package com.example.productivityapp.presentacion.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.text.PrecomputedText;
 import android.view.LayoutInflater;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -10,7 +8,6 @@ import android.text.style.StrikethroughSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.productivityapp.R;
 import com.example.productivityapp.model.AppDatabase;
 import com.example.productivityapp.model.ToDo;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.threeten.bp.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,11 +23,11 @@ import java.util.List;
 
 public class ListToDosAdapter extends RecyclerView.Adapter<ListToDosAdapter.TodoViewHolder> {
     private final static int MAX_CHARACTERS_TITLE = 12;
-    private Context context;
+    private final Context context;
     private List<ToDo> todos;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
-    private OnItemClickListener listener;
-    private AppDatabase appDatabase;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+    private final OnItemClickListener listener;
+    private final AppDatabase appDatabase;
 
     public ListToDosAdapter(Context context, List<ToDo> todos, OnItemClickListener onItemClickListener) {
         cargarColeccion(todos);
@@ -125,10 +121,10 @@ public class ListToDosAdapter extends RecyclerView.Adapter<ListToDosAdapter.Todo
 
     public static class TodoViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView titleText;
-        private TextView limitDateText;
-        private TextView priorityText;
-        private CheckBox item;
+        private final TextView titleText;
+        private final TextView limitDateText;
+        private final TextView priorityText;
+        private final CheckBox item;
 
         public TodoViewHolder(@NonNull View itemView) {
             super(itemView);
