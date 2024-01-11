@@ -100,7 +100,6 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
             switchStudyMode();
         }
 
-        crearCanalNotificacion();
         timerButton.setOnClickListener(v -> {
             if (isTimerRunning) {
                 if (!modoSwitch.isChecked()) {
@@ -115,7 +114,6 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
                 startTimer(modoSwitch.isChecked() ? initialBreakTime : initialStudyTime);
                 isTimerRunning = true;
                 timerButton.setText(R.string.detenerTextoBoton);
-                crearNotificacionProgramada();
             }
         });
 
@@ -148,46 +146,6 @@ public class TimerFragment extends Fragment  implements SharedPreferences.OnShar
         pb.setRotation(0);
 
         return pb;
-    }
-
-    private void crearCanalNotificacion() {
-        //Si API 26 o superior.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String idCanal = SIMPLE_CHANNEL;
-            String nombreCanal = "Productivity App";
-            int importancia = NotificationManager.IMPORTANCE_DEFAULT;
-
-            NotificationChannel canal = new NotificationChannel(idCanal, nombreCanal, importancia);
-
-            NotificationManager notificationManager = (NotificationManager) requireActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(canal);
-        }
-
-    }
-    private void crearNotificacionProgramada() {
-        String tiempo = String.valueOf(this.timerText.getText());
-        long minutos = Long.parseLong(tiempo.split(":")[0]);
-
-        Duration duration = Duration.ofMinutes(minutos);
-        long milisegundos = duration.toMillis();
-
-        Intent intent = new Intent(requireContext(), NotificacionProgramada.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                requireContext(),
-                PROGRAMADA_NOTIFICATION_ID,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
-        );
-
-        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-
-        if (alarmManager != null) {
-            long futureInMillis = System.currentTimeMillis() + 5000; // 5 segundos desde ahora
-
-            // Programar la notificación para que aparezca en 5 segundos.
-            alarmManager.set(AlarmManager.RTC_WAKEUP, futureInMillis, pendingIntent);
-        }
-
     }
 
     private void switchBreakMode() {
