@@ -58,25 +58,27 @@
 
                 <Button
                     android:id="@+id/buttonAceptar"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="@android:color/holo_green_light"
                     android:text="@string/aceptarSolicitud"
-                    android:textSize="18sp"
-                    style="?android:attr/buttonBarButtonStyle" />
+                    android:textColor="#303F9F"
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/buttonRechazar"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="@android:color/holo_red_light"
                     android:text="@string/rechazarSolicitud"
-                    android:textSize="18sp"
-                    style="?android:attr/buttonBarButtonStyle" />
+                    android:textColor="#212121"
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

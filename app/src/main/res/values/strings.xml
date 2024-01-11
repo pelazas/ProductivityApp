@@ -58,4 +58,7 @@
     <string name="social">Social</string>
     <string name="configuracion">Configuración</string>
     <string name="buscar_amigos">Buscar amigos</string>
+    <string name="idUser">id usuario</string>
+    <string name="añadir">Añadir</string>
+    <string name="contraseña">Contraseña</string>
 </resources>
