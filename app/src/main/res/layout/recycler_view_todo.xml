@@ -25,6 +25,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/fechaLimiteDescTarea"
+                android:textColor="#000000"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/limit_date_text"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -35,16 +36,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
+                android:textColor="#000000"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <CheckBox android:id="@+id/todo_title_text"
+            <CheckBox
+                android:id="@+id/todo_title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:layout_marginStart="24dp"
                 android:layout_marginVertical="24dp"
+                android:layout_marginStart="24dp"
+                android:backgroundTint="#000000"
+                android:textColor="#000000"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +60,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="14dp"
+                android:backgroundTint="#000000"
                 android:text="@string/prioridadDescTarea"
+                android:textColor="#000000"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/priority_text" />
