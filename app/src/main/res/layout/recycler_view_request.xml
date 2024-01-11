@@ -34,15 +34,14 @@
 
             <TextView
                 android:id="@+id/textViewUserId"
-                android:layout_width="287dp"
+                android:layout_width="wrap_content"
                 android:layout_height="27dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewUser"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="16dp"
                 tools:text="Email" />
 
             <LinearLayout
